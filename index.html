@@ -1,0 +1,1578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Reading Room</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=IM+Fell+English+SC&display=swap" rel="stylesheet">
+<style>
+/* Dark academia study: leather-dark room, parchment index cards, gold foil, hydrangea + pink accents.
+   Layout: one centered reading column, ribbon-bookmark tabs, cards stacked like a card catalogue. */
+:root{
+  --room:#15100c;
+  --leather:#24180f;
+  --parchment:#efe2c8;
+  --ink:#2a1d14;
+  --ink-soft:#5b4636;
+  --gold:#c9a24c;
+  --gold-hi:#f1d98e;
+  --oxblood:#6e1f2a;
+  --forest:#26392d;
+  --pink:#e8a3bc;
+  --pink-deep:#b85d82;
+  --hydrangea:#ab9ce3;
+  --ciel:#8db7de;
+  --display:"Cormorant Garamond", "Cormorant", Garamond, "Times New Roman", serif;
+  --body:"EB Garamond", Garamond, Georgia, serif;
+  --caps:"IM Fell English SC", "Cormorant Garamond", Georgia, serif;
+  color-scheme: dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  background:
+    radial-gradient(120% 80% at 50% 0%, rgba(58,38,24,.5) 0%, rgba(21,16,12,.8) 60%, rgba(10,7,5,.95) 100%) fixed,
+    var(--leather-img) 0 0/320px 320px,
+    var(--room);
+  color:var(--parchment);
+  font-family:var(--body);
+  font-size:18px;
+  line-height:1.5;
+  min-height:100%;
+  -webkit-font-smoothing:antialiased;
+}
+.grain{
+  position:fixed; inset:0; pointer-events:none; z-index:50;
+  background-image:var(--grain-img); background-size:240px 240px;
+  opacity:.16; mix-blend-mode:overlay;
+}
+.vignette{position:fixed; inset:0; pointer-events:none; z-index:49;
+  background:radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,.55) 100%);}
+svg.defs{position:absolute; width:0; height:0; overflow:hidden}
+
+.wrap{max-width:720px; margin:0 auto; padding:0 18px 64px; position:relative; z-index:1}
+
+/* ---------- header ---------- */
+header.top{position:relative; padding:34px 0 10px; display:grid; grid-template-columns:96px 1fr; gap:18px; align-items:center}
+.window-art{width:96px; height:146px; display:block}
+.title-art{width:100%; height:auto; display:block; overflow:visible}
+.kicker{font-family:var(--caps); letter-spacing:.14em; color:var(--pink); font-size:15px; margin:2px 0 0}
+.tagline{font-style:italic; color:#d8c7a6; margin:2px 0 0; font-size:17px; text-wrap:balance}
+.deco-hyd{position:absolute; right:-34px; top:-18px; width:230px; height:200px; pointer-events:none; z-index:-1; opacity:.95}
+.deco-lily{position:absolute; left:-44px; bottom:-96px; width:120px; height:170px; pointer-events:none; z-index:-1; opacity:.9}
+.window-cap{font-family:var(--caps); font-size:12px; color:var(--ciel); text-align:center; letter-spacing:.2em; margin-top:2px}
+.fleuron{display:block; width:100%; height:26px; margin:14px 0 6px}
+
+/* ---------- ribbon tabs ---------- */
+nav.tabs{display:flex; gap:10px; margin:6px 0 22px; flex-wrap:wrap}
+nav.tabs a{
+  position:relative; text-decoration:none; color:var(--parchment);
+  font-family:var(--caps); letter-spacing:.08em; font-size:16px;
+  padding:9px 16px 15px; background-color:var(--forest); background-image:var(--silk-img); background-size:90px 60px;
+  clip-path:polygon(0 0,100% 0,100% 100%,50% 82%,0 100%);
+  box-shadow:inset 0 -2px 0 rgba(0,0,0,.25);
+  transition:transform .2s ease, background .2s ease;
+}
+nav.tabs a:nth-child(1){background-color:#2b4a6b}
+nav.tabs a:nth-child(2){background-color:var(--forest)}
+nav.tabs a:nth-child(3){background-color:#3a2a4d}
+nav.tabs a:nth-child(4){background-color:var(--oxblood)}
+nav.tabs a:nth-child(5){background-color:#5a3b1e}
+nav.tabs a[aria-current="page"]{transform:translateY(5px); background-image:var(--silk-img), linear-gradient(#c97a99,var(--pink-deep)); background-size:90px 60px, 100% 100%; color:#fff7f0}
+nav.tabs a:focus-visible{outline:2px solid var(--gold-hi); outline-offset:3px}
+nav.tabs .n{font-family:var(--body); font-size:14px; opacity:.85; margin-left:6px}
+
+/* ---------- parchment card ---------- */
+.card{
+  position:relative; color:var(--ink);
+  background-color:var(--parchment);
+  background-image:var(--stain-img, none), var(--paper-img);
+  background-size:var(--stain-size, 10px 10px), 420px 420px;
+  background-position:var(--stain-pos, 0 0), 0 0;
+  background-repeat:no-repeat, repeat;
+  -webkit-mask-image:var(--deckle-img); mask-image:var(--deckle-img);
+  -webkit-mask-size:100% 100%; mask-size:100% 100%;
+  padding:22px 22px 20px;
+  filter:drop-shadow(0 10px 18px rgba(0,0,0,.45));
+}
+.card + .card{margin-top:16px}
+.card h2{font-family:var(--display); font-weight:600; font-style:italic; font-size:30px; line-height:1.1; margin:0; color:var(--oxblood); text-wrap:balance}
+.card .sub{margin:4px 0 14px; color:var(--ink-soft); font-style:italic; font-size:16px}
+.section-head{display:flex; align-items:flex-end; justify-content:space-between; gap:12px; margin:26px 0 10px}
+.section-head h3{font-family:var(--display); font-style:italic; font-weight:600; font-size:26px; margin:0; color:var(--gold-hi)}
+.section-head .meta{font-family:var(--caps); font-size:14px; color:#cdb78f; letter-spacing:.06em}
+
+/* ---------- form ---------- */
+.form{display:grid; gap:12px}
+.row2{display:grid; grid-template-columns:1.4fr 1fr; gap:12px}
+label.lbl{display:block; font-family:var(--caps); font-size:14px; letter-spacing:.08em; color:var(--ink-soft); margin-bottom:3px}
+input[type=text]{
+  width:100%; font:inherit; font-size:17px; color:var(--ink);
+  background:rgba(255,250,238,.55); border:0; border-bottom:1.5px solid #9b7f5f;
+  padding:7px 4px; border-radius:2px;
+}
+input[type=text]::placeholder{color:#9a856b; font-style:italic}
+input[type=text]:focus{outline:none; border-bottom-color:var(--pink-deep); background:rgba(255,250,238,.85)}
+.rating{display:flex; gap:4px; align-items:center}
+.rating button{background:none; border:0; padding:2px; cursor:pointer; border-radius:50%; line-height:0}
+.rating button svg{width:40px; height:40px; display:block; transition:transform .15s ease}
+.rating button:hover svg{transform:scale(1.08) rotate(-4deg)}
+.rating button:focus-visible{outline:2px solid var(--pink-deep); outline-offset:1px}
+.rating .rl{font-style:italic; color:var(--ink-soft); font-size:15px; margin-left:8px}
+.hyd-on{--ha:#b5a3ec; --hb:#eea2c0; --hc:#8fb7e0; --hl:#4e6b46}
+.hyd-off{--ha:#cbbba0; --hb:#c4b294; --hc:#bfae90; --hl:#b3a283; opacity:.75}
+.actions{display:flex; align-items:center; gap:14px; flex-wrap:wrap; margin-top:4px}
+.btn{
+  font-family:var(--caps); letter-spacing:.08em; font-size:17px; cursor:pointer;
+  color:#fff7ef; border:0; padding:11px 20px 10px; border-radius:3px;
+  background:linear-gradient(180deg,#86283a,var(--oxblood));
+  box-shadow:inset 0 1px 0 rgba(255,220,220,.25), 0 3px 0 #3d0f17, 0 6px 14px rgba(0,0,0,.3);
+}
+.btn:hover{filter:brightness(1.08)}
+.btn:active{transform:translateY(2px); box-shadow:inset 0 1px 0 rgba(255,220,220,.25), 0 1px 0 #3d0f17}
+.btn:focus-visible{outline:2px solid var(--gold); outline-offset:3px}
+.btn[disabled]{opacity:.55; cursor:default}
+.btn.ghost{background:transparent; color:var(--oxblood); box-shadow:inset 0 0 0 1.5px var(--oxblood); padding:8px 14px 7px; font-size:15px}
+.btn.pinkb{background:linear-gradient(180deg,#d784a5,var(--pink-deep)); box-shadow:inset 0 1px 0 rgba(255,235,240,.4), 0 3px 0 #7a3453, 0 6px 14px rgba(0,0,0,.25)}
+.hint{font-style:italic; font-size:15px; color:var(--ink-soft)}
+.err{color:#8a1c2c; font-style:italic; font-size:15px}
+
+/* ---------- stats ---------- */
+.stats{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:18px 0 0}
+.stat{border:1px solid rgba(201,162,76,.45); padding:10px 12px; text-align:center; position:relative;
+  background:linear-gradient(rgba(28,19,12,.74),rgba(28,19,12,.74)), var(--brass-img) 0 0/220px 90px;
+  box-shadow:inset 0 0 0 3px rgba(20,13,8,.6), inset 0 0 0 4px rgba(201,162,76,.25)}
+.stat::before,.stat::after{content:""; position:absolute; top:6px; width:5px; height:5px; border-radius:50%; background:radial-gradient(circle at 35% 35%, #f6e2a4, #8a6524)}
+.stat::before{left:6px} .stat::after{right:6px}
+.stat b{display:block; font-family:var(--display); font-size:30px; line-height:1; color:var(--gold-hi); font-weight:600; font-variant-numeric:tabular-nums}
+.stat span{font-family:var(--caps); font-size:13px; letter-spacing:.08em; color:#cdb78f}
+
+/* ---------- book entries ---------- */
+.book{display:grid; grid-template-columns:14px 1fr; gap:16px; padding:18px 20px 16px 0}
+.spine{border-radius:2px 0 0 2px; position:relative; margin-left:-22px; width:22px;
+  background:linear-gradient(90deg, rgba(0,0,0,.25), transparent 40%, rgba(255,255,255,.12) 55%, transparent 70%), var(--sp);
+}
+.spine::before,.spine::after{content:""; position:absolute; left:3px; right:3px; height:2px; background:var(--gold); opacity:.8}
+.spine::before{top:16px} .spine::after{bottom:16px}
+.book h4{font-family:var(--display); font-style:italic; font-weight:600; font-size:26px; line-height:1.1; margin:0; color:var(--ink); text-wrap:balance}
+.book .by{font-family:var(--caps); color:var(--ink-soft); font-size:15px; letter-spacing:.05em}
+.book .rate-row{display:flex; align-items:center; gap:10px; margin:6px 0 4px; flex-wrap:wrap}
+.minirate{display:flex; gap:1px}
+.minirate svg{width:24px; height:24px}
+.book .when{font-family:var(--caps); font-size:13px; color:#8b735a; letter-spacing:.06em}
+.book blockquote{margin:6px 0 0; font-style:italic; color:#3d2b1f; font-size:17px}
+.book blockquote::before{content:"\201C"} .book blockquote::after{content:"\201D"}
+.note{display:grid; grid-template-columns:46px 1fr; gap:10px; align-items:center; margin-top:12px; padding:10px 12px;
+  background:rgba(232,163,188,.22); border-left:3px solid var(--pink-deep)}
+.note svg{width:46px; height:46px}
+.note .from{font-family:var(--caps); font-size:13px; letter-spacing:.08em; color:var(--pink-deep)}
+.note p{margin:0; font-style:italic; color:#4a2236}
+.book .tools{margin-top:10px}
+.linkbtn{background:none; border:0; padding:2px 0; font:inherit; font-family:var(--caps); font-size:13px; letter-spacing:.08em; color:#8b735a; cursor:pointer; text-decoration:underline; text-underline-offset:3px}
+.linkbtn:focus-visible{outline:2px solid var(--pink-deep)}
+.linkbtn.arm{color:#8a1c2c}
+.empty{text-align:center; padding:28px 18px}
+.empty p{margin:6px 0 0}
+
+/* ---------- recs ---------- */
+.rec h4{font-family:var(--display); font-style:italic; font-weight:600; font-size:28px; margin:0; line-height:1.1; color:var(--ink); text-wrap:balance}
+.rec .by{font-family:var(--caps); color:var(--ink-soft); font-size:15px}
+.rec .why{margin:10px 0 12px; padding-left:14px; border-left:2px solid var(--hydrangea); color:#35251a}
+.rec .why b{font-family:var(--caps); font-weight:400; color:#6a52b5; letter-spacing:.06em; font-size:14px; display:block}
+.source{font-family:var(--caps); font-size:13px; letter-spacing:.08em; color:#cdb78f}
+.card .source{color:var(--ink-soft)}
+.finding{display:flex; align-items:center; gap:14px; justify-content:center; padding:18px}
+.finding svg{width:44px; height:64px}
+.flame{transform-origin:22px 30px; animation:flick 1.6s ease-in-out infinite alternate}
+@keyframes flick{0%{transform:scale(1,1) rotate(-2deg)}40%{transform:scale(.94,1.06) rotate(2deg)}100%{transform:scale(1.04,.95) rotate(-1deg)}}
+
+/* ---------- wishlist ---------- */
+.wish{display:grid; grid-template-columns:auto 1fr; gap:14px; align-items:start}
+.check{appearance:none; -webkit-appearance:none; width:26px; height:26px; margin:4px 0 0; border:1.5px solid var(--oxblood); border-radius:3px; background:rgba(255,250,238,.6); cursor:pointer; display:grid; place-content:center}
+.check:checked{background:var(--oxblood)}
+.check:checked::after{content:""; width:12px; height:7px; border-left:2.5px solid #fff1e6; border-bottom:2.5px solid #fff1e6; transform:rotate(-45deg) translate(1px,-1px)}
+.check:focus-visible{outline:2px solid var(--pink-deep); outline-offset:2px}
+.wish.got h4{text-decoration:line-through; text-decoration-color:var(--pink-deep); opacity:.65}
+.wish h4{font-family:var(--display); font-style:italic; font-weight:600; font-size:24px; margin:0; color:var(--ink)}
+.wish .by{font-family:var(--caps); color:var(--ink-soft); font-size:14px}
+.wish p{margin:6px 0 4px; font-size:16px; color:#4a3627}
+.wish .gotlbl{font-family:var(--caps); font-size:13px; color:var(--pink-deep); letter-spacing:.08em}
+
+/* ---------- misc ---------- */
+.banner{border:1px solid var(--pink); color:#f6d7e2; padding:10px 14px; margin:0 0 16px; font-style:italic; background:rgba(110,31,42,.35)}
+.toast{position:fixed; left:50%; bottom:22px; transform:translate(-50%,30px); opacity:0; z-index:60;
+  background:var(--leather); color:var(--parchment); border:1px solid var(--gold); padding:10px 18px; font-style:italic;
+  box-shadow:0 10px 30px rgba(0,0,0,.5); transition:all .3s ease; max-width:calc(100% - 32px); text-align:center}
+.toast.show{opacity:1; transform:translate(-50%,0)}
+footer{margin-top:40px; text-align:center; color:#b9a27d}
+footer button{background:none; border:0; cursor:pointer; padding:0; border-radius:50%}
+footer button:focus-visible{outline:2px solid var(--gold); outline-offset:3px}
+footer svg.seal{width:74px; height:74px}
+.seal-row{display:flex; align-items:center; justify-content:center}
+.foot-caca{width:170px; height:110px; flex:0 1 170px; min-width:0}
+.foot-caca.r{transform:scaleX(-1)}
+.card-caca{position:absolute; right:6px; bottom:4px; width:150px; height:104px; pointer-events:none; opacity:.95}
+#v-kinokuniya .card:first-child{padding-bottom:96px}
+footer .made{font-family:var(--caps); letter-spacing:.12em; font-size:14px; margin:4px 0 0}
+footer .ps{font-style:italic; color:var(--pink); margin:6px 0 0; min-height:1.5em}
+[hidden]{display:none !important}
+.book:nth-child(odd){--stain-img:var(--ring-img); --stain-size:160px 160px; --stain-pos:right -38px bottom -46px}
+.rec{--stain-img:var(--splat-img); --stain-size:170px 120px; --stain-pos:right -24px bottom -18px}
+.card h2,.section-head h3{position:relative; z-index:0}
+.wash{position:absolute; left:-14px; top:-8px; width:min(330px,110%); height:58px; z-index:-1; pointer-events:none; overflow:visible}
+.ornate{padding-top:36px}
+.fili{position:absolute; top:7px; width:38px; height:38px; pointer-events:none}
+.fili.l{left:9px} .fili.r{right:9px; transform:scaleX(-1)}
+.pressed{position:absolute; top:12px; right:14px; width:52px; height:52px; transform:rotate(14deg); pointer-events:none}
+.rec h4,.rec .by{padding-right:56px}
+.motes{position:fixed; inset:0; width:100%; height:100%; pointer-events:none; z-index:48}
+.motes circle{animation:drift var(--d,18s) ease-in-out infinite alternate; transform-box:fill-box}
+@keyframes drift{from{transform:translate(0,0); opacity:.15} 50%{opacity:.75} to{transform:translate(var(--dx,20px),var(--dy,-40px)); opacity:.2}}
+.hide-sm{}
+.today h2{margin-top:2px}
+.today-date{font-family:var(--caps); letter-spacing:.14em; color:var(--pink-deep); font-size:14px; margin:0}
+.today-flower{float:right; width:150px; height:98px; margin:-14px -10px 0 6px}
+.affirm{clear:both; font-family:var(--display); font-style:italic; font-weight:500; font-size:30px; line-height:1.22; color:#3a2418; margin:14px 0 16px; text-wrap:pretty; position:relative; padding-left:26px}
+.affirm::before{content:"\201C"; position:absolute; left:-4px; top:-14px; font-size:68px; line-height:1; color:var(--gold); opacity:.75}
+.from-shelf .from{font-family:var(--caps); letter-spacing:.1em; font-size:14px; color:var(--ink-soft)}
+.from-shelf blockquote{margin:6px 0 2px; font-family:var(--display); font-style:italic; font-size:24px; color:var(--ink)}
+.from-shelf .src{font-style:italic; color:var(--ink-soft); font-size:15px}
+.buzz{display:flex; flex-direction:column; align-items:center; margin:30px 0 0}
+.buzz button{background:none; border:0; cursor:pointer; padding:4px; border-radius:50%; line-height:0}
+.buzz button:focus-visible{outline:2px solid var(--gold); outline-offset:3px}
+.buzz svg{width:84px; height:96px}
+.buzz.shake svg{animation:shake .55s ease}
+@keyframes shake{0%,100%{transform:rotate(0)}20%{transform:rotate(-14deg)}40%{transform:rotate(11deg)}60%{transform:rotate(-7deg)}80%{transform:rotate(4deg)}}
+.buzz-cap{font-family:var(--caps); font-size:13px; letter-spacing:.12em; color:#a8916b; margin-top:2px}
+.bubble{position:relative; background:var(--parchment); color:var(--ink); font-weight:500; font-size:18px; padding:12px 16px; border-radius:16px; max-width:300px; text-align:center; margin-bottom:14px; filter:drop-shadow(0 6px 12px rgba(0,0,0,.45))}
+.bubble::after{content:""; position:absolute; left:50%; bottom:-10px; transform:translateX(-50%); border:10px solid transparent; border-bottom:0; border-top-color:var(--parchment)}
+@media (max-width:520px){ nav.tabs a{font-size:13px; padding:8px 8px 13px} .pol figcaption{font-size:19px}
+ .hide-sm{display:none} .affirm{font-size:26px} .today-flower{width:120px; height:80px} }
+.badges{display:flex; gap:12px; flex-wrap:wrap; align-items:flex-start}
+.badge{width:96px; text-align:center}
+.badge svg{width:96px; height:96px; display:block}
+.badge b{display:block; font-family:var(--display); font-style:italic; font-weight:600; font-size:17px; color:var(--gold-hi); line-height:1.1}
+.badge span{font-family:var(--caps); font-size:12px; letter-spacing:.08em; color:#cdb78f}
+.badge.ghost b{color:#a8916b}
+.badge-note{flex:1 1 180px; align-self:center; font-style:italic; color:#e3d2b0; font-size:16px}
+.pips{display:flex; gap:5px; margin-top:6px}
+.pips i{width:14px; height:14px; border-radius:50%; border:1.5px solid var(--gold); display:block}
+.pips i.on{background:radial-gradient(circle at 35% 35%, #fff0b8, #c9a24c 60%, #7d5a1c)}
+footer svg.seal{width:120px; height:120px}
+
+/* scrapbook */
+.filmstrip{display:flex; gap:10px; overflow-x:auto; padding:22px 14px; margin:18px -18px 8px;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 10px, #e9dcc0 10px 20px, transparent 20px 30px) top 6px left 0/30px 9px repeat-x,
+    repeating-linear-gradient(90deg, transparent 0 10px, #e9dcc0 10px 20px, transparent 20px 30px) bottom 6px left 0/30px 9px repeat-x,
+    linear-gradient(#1b130d,#120c08);
+  scroll-snap-type:x proximity; -webkit-overflow-scrolling:touch}
+.filmstrip button{flex:0 0 auto; border:0; padding:0; background:none; cursor:pointer; scroll-snap-align:start; text-align:center}
+.filmstrip svg{width:78px; height:104px; display:block; border-radius:2px; box-shadow:0 0 0 1px rgba(233,220,192,.15)}
+.filmstrip span{font-family:var(--caps); font-size:11px; color:#e0a14a; letter-spacing:.1em}
+.filmstrip button:focus-visible{outline:2px solid var(--gold); outline-offset:2px}
+.scrap{display:grid; gap:34px; padding:14px 6px 10px}
+.pol{position:relative; margin:0 auto; width:min(100%,420px); padding:14px 14px 40px;
+  background-color:#f3ead8; background-image:var(--paper-img); background-size:420px 420px;
+  transform:rotate(var(--tilt,0deg)); box-shadow:0 2px 0 rgba(0,0,0,.08), 0 14px 26px rgba(0,0,0,.5); cursor:zoom-in}
+.pol::after{content:""; position:absolute; left:8%; right:8%; bottom:-6px; height:14px; background:radial-gradient(ellipse at center, rgba(0,0,0,.4), transparent 70%); z-index:-1}
+.pol.wide{width:min(100%,520px)}
+.pol svg.ph{width:100%; height:auto; display:block; background:#2a1d14}
+.pol figcaption{position:absolute; left:16px; right:16px; bottom:12px; font-family:var(--display); font-style:italic; font-weight:600; font-size:21px; color:#3a2418; text-align:center; line-height:1.15}
+.pol .tape{position:absolute; top:-14px; left:50%; width:120px; height:32px; transform:translateX(-50%) rotate(var(--tt,-3deg)); pointer-events:none}
+.pol .corner{position:absolute; width:30px; height:30px; pointer-events:none}
+.pol .corner.tl{top:6px; left:6px} .pol .corner.tr{top:6px; right:6px; transform:scaleX(-1)}
+.pol .corner.bl{bottom:32px; left:6px; transform:scaleY(-1)} .pol .corner.br{bottom:32px; right:6px; transform:scale(-1,-1)}
+.pol:focus-visible{outline:2px solid var(--gold); outline-offset:6px}
+.pressed-sprig{width:150px; height:100px; margin:-14px auto; display:block; opacity:.95}
+.lightbox{position:fixed; inset:0; z-index:70; background:rgba(8,5,3,.92); display:flex; align-items:center; justify-content:center; padding:16px}
+.lb-fig{margin:0; max-width:min(96vw,900px); max-height:92%; display:flex; flex-direction:column; align-items:center}
+.lb-fig svg{max-width:100%; height:auto; display:block; box-shadow:0 20px 50px rgba(0,0,0,.6)}
+.lb-fig figcaption{font-family:var(--display); font-style:italic; font-size:24px; color:var(--parchment); margin-top:12px; text-align:center}
+.lb-close,.lb-nav{position:absolute; background:rgba(36,24,15,.7); color:var(--gold-hi); border:1px solid rgba(201,162,76,.5); width:46px; height:46px; border-radius:50%; font-size:30px; line-height:1; cursor:pointer}
+.lb-close{top:14px; right:14px}
+.lb-nav.prev{left:10px; top:50%} .lb-nav.next{right:10px; top:50%}
+.lb-close:focus-visible,.lb-nav:focus-visible{outline:2px solid var(--gold-hi); outline-offset:2px}
+.candle-art{position:absolute; right:2px; bottom:-34px; width:64px; height:130px; pointer-events:none; z-index:1}
+.flicker{animation:flick2 2.4s ease-in-out infinite alternate}
+@keyframes flick2{0%{opacity:.75}30%{opacity:.95}55%{opacity:.7}80%{opacity:1}100%{opacity:.8}}
+.candlelight{position:fixed; top:-20vh; right:-30vw; width:90vw; height:90vh; pointer-events:none; z-index:0;
+  background:radial-gradient(closest-side, rgba(255,180,90,.12), rgba(255,150,60,.05) 55%, transparent); animation:flick2 3.2s ease-in-out infinite alternate}
+.motto{display:block; width:100%; height:44px; margin:12px 0 4px}
+.dropcap{float:left; width:66px; height:66px; margin:6px 10px 0 0}
+.affirm.has-cap{padding-left:0}
+.affirm.has-cap::before{content:none}
+.quill{position:absolute; top:26px; right:20px; width:74px; height:86px; pointer-events:none}
+.quill-card .sub{padding-right:72px}
+.singed{isolation:isolate}
+.singed::before{content:""; position:absolute; inset:0; background-image:var(--singe-img); background-size:100% 100%; pointer-events:none; z-index:0; mix-blend-mode:multiply}
+.singed > *{position:relative; z-index:1}
+.singed > .fili{position:absolute}
+.shelf-art{display:block; width:100%; height:auto; margin:40px 0 0}
+footer{position:relative; margin-top:0 !important; padding:26px 16px 22px;
+  background:linear-gradient(rgba(18,12,8,.74),rgba(18,12,8,.86)), var(--marble-img) 0 0/360px 360px;
+  border-top:3px double rgba(201,162,76,.6); box-shadow:inset 0 10px 24px rgba(0,0,0,.6)}
+.soundbar{position:fixed; left:50%; bottom:10px; transform:translateX(-50%); width:min(calc(100% - 20px),560px); z-index:55;
+  background:linear-gradient(rgba(30,20,13,.9),rgba(20,13,8,.94)), var(--leather-img) 0 0/320px 320px;
+  border:1px solid rgba(201,162,76,.55); box-shadow:0 10px 30px rgba(0,0,0,.6), inset 0 0 0 3px rgba(20,13,8,.6), inset 0 0 0 4px rgba(201,162,76,.2); border-radius:6px}
+.sb-row{display:flex; align-items:center; gap:12px; padding:8px 10px}
+.vinyl{width:46px; height:46px; flex:0 0 46px; animation:spin 5s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.sb-meta{flex:1; min-width:0; display:flex; flex-direction:column}
+.sb-k{font-family:var(--caps); font-size:11px; letter-spacing:.14em; color:var(--pink)}
+.sb-t{font-family:var(--display); font-style:italic; font-weight:600; font-size:18px; color:var(--gold-hi); white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.eq{width:30px; height:22px; flex:0 0 30px}
+.eq rect{transform-origin:bottom; transform-box:fill-box; animation:eq 1s ease-in-out infinite alternate}
+.eq rect:nth-child(2){animation-duration:.7s} .eq rect:nth-child(3){animation-duration:1.3s} .eq rect:nth-child(4){animation-duration:.85s} .eq rect:nth-child(5){animation-duration:1.15s}
+@keyframes eq{from{transform:scaleY(.3)} to{transform:scaleY(1)}}
+.sb-play{text-decoration:none; padding:8px 16px 7px; font-size:15px}
+.sb-panel{padding:10px 10px 0}
+.sb-panel iframe{width:100%; height:152px; border:0; border-radius:10px; display:block}
+body{padding-bottom:84px}
+.toast{bottom:92px}
+@media (prefers-reduced-motion:reduce){ .vinyl,.eq rect{animation:none} }
+.exlibris{display:block; width:230px; height:74px; margin:0 auto 6px}
+@media (prefers-reduced-motion:reduce){ .motes circle{animation:none} }
+@media (max-width:520px){
+  body{font-size:17px}
+  header.top{grid-template-columns:70px 1fr; gap:12px; padding-top:24px}
+  .window-art{width:70px; height:106px}
+  .deco-hyd{width:170px; height:150px; right:-40px; top:-24px; opacity:.7}
+  .row2{grid-template-columns:1fr}
+  .rating button svg{width:36px; height:36px}
+  .card{padding:20px 16px 18px}
+  .card h2{font-size:27px}
+  .book{padding-right:12px}
+  .spine{margin-left:-16px; width:18px}
+  nav.tabs{gap:6px}
+  nav.tabs a{font-size:14px; padding:8px 10px 13px; letter-spacing:.04em}
+  nav.tabs .n{margin-left:3px}
+}
+@media (prefers-reduced-motion:reduce){
+  .flame{animation:none}
+  *{transition:none !important}
+}
+</style>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+<div class="vignette" aria-hidden="true"></div>
+<div class="candlelight" aria-hidden="true"></div>
+<svg class="motes" id="motes" aria-hidden="true" preserveAspectRatio="none"></svg>
+
+<!-- shared filters and symbols -->
+<svg class="defs" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="goldGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff0b8"/>
+      <stop offset=".35" stop-color="#e2bf63"/>
+      <stop offset=".55" stop-color="#a9802f"/>
+      <stop offset=".8" stop-color="#e8c977"/>
+      <stop offset="1" stop-color="#8a6524"/>
+    </linearGradient>
+    <linearGradient id="goldLine" x1="0" x2="1">
+      <stop offset="0" stop-color="#c9a24c" stop-opacity="0"/>
+      <stop offset=".5" stop-color="#f1d98e"/>
+      <stop offset="1" stop-color="#c9a24c" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1d2f52"/>
+      <stop offset=".55" stop-color="#5f8fc4"/>
+      <stop offset="1" stop-color="#b9d6ef"/>
+    </linearGradient>
+    <radialGradient id="waxGrad" cx=".4" cy=".35" r=".7">
+      <stop offset="0" stop-color="#f0a8c2"/>
+      <stop offset=".6" stop-color="#c0577e"/>
+      <stop offset="1" stop-color="#7d2a4b"/>
+    </radialGradient>
+    <radialGradient id="flameGrad" cx=".5" cy=".7" r=".6">
+      <stop offset="0" stop-color="#fff8d6"/>
+      <stop offset=".5" stop-color="#ffc85a"/>
+      <stop offset="1" stop-color="#e2672a" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- gold foil: ink-bleed edges, embossed specular sheen, foil sparkle -->
+    <filter id="foil" x="-5%" y="-30%" width="110%" height="160%">
+      <feTurbulence type="fractalNoise" baseFrequency=".045" numOctaves="2" seed="9" result="wob"/>
+      <feDisplacementMap in="SourceGraphic" in2="wob" scale="2.2" xChannelSelector="R" yChannelSelector="G" result="bled"/>
+      <feGaussianBlur in="bled" stdDeviation="1.1" result="soft"/>
+      <feSpecularLighting in="soft" surfaceScale="3.5" specularConstant="1.2" specularExponent="24" lighting-color="#fff4cc" result="spec">
+        <fePointLight x="-120" y="-260" z="260"/>
+      </feSpecularLighting>
+      <feComposite in="spec" in2="bled" operator="in" result="specIn"/>
+      <feTurbulence type="fractalNoise" baseFrequency="1.3" numOctaves="2" seed="2" result="sparkNoise"/>
+      <feColorMatrix in="sparkNoise" type="matrix" values="0 0 0 0 1  0 0 0 0 .93  0 0 0 0 .7  0 0 0 2.4 -1.45" result="spark"/>
+      <feComposite in="spark" in2="bled" operator="in" result="sparkIn"/>
+      <feDropShadow in="bled" dx="0" dy="2" stdDeviation="1.5" flood-color="#000" flood-opacity=".6" result="shadow"/>
+      <feMerge><feMergeNode in="shadow"/><feMergeNode in="bled"/><feMergeNode in="sparkIn"/><feMergeNode in="specIn"/></feMerge>
+    </filter>
+
+    <!-- watercolor: wobbly edge, pigment pooling at the rim, paper bloom -->
+    <filter id="wc" x="-25%" y="-25%" width="150%" height="150%">
+      <feTurbulence type="fractalNoise" baseFrequency=".06" numOctaves="3" seed="7" result="t"/>
+      <feDisplacementMap in="SourceGraphic" in2="t" scale="5" xChannelSelector="R" yChannelSelector="B" result="d"/>
+      <feGaussianBlur in="d" stdDeviation=".5" result="blur"/>
+      <feMorphology in="d" operator="erode" radius="1.1" result="er"/>
+      <feComposite in="d" in2="er" operator="out" result="rim"/>
+      <feColorMatrix in="rim" type="matrix" values=".55 0 0 0 0  0 .45 0 0 0  0 0 .7 0 0  0 0 0 .7 0" result="rimDark"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="2" seed="11" result="pap"/>
+      <feColorMatrix in="pap" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .5 -.15" result="papA"/>
+      <feComposite in="papA" in2="d" operator="in" result="bloom"/>
+      <feComponentTransfer in="blur" result="wash"><feFuncA type="linear" slope=".88"/></feComponentTransfer>
+      <feMerge><feMergeNode in="wash"/><feMergeNode in="rimDark"/><feMergeNode in="bloom"/></feMerge>
+    </filter>
+
+    <!-- lighter watercolor for the many small rating blossoms -->
+    <filter id="wcs" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency=".18" numOctaves="2" seed="5" result="t"/>
+      <feDisplacementMap in="SourceGraphic" in2="t" scale="1.6" result="d"/>
+      <feMorphology in="d" operator="erode" radius=".5" result="er"/>
+      <feComposite in="d" in2="er" operator="out" result="rim"/>
+      <feColorMatrix in="rim" type="matrix" values=".5 0 0 0 0  0 .4 0 0 0  0 0 .65 0 0  0 0 0 .55 0" result="rimDark"/>
+      <feMerge><feMergeNode in="d"/><feMergeNode in="rimDark"/></feMerge>
+    </filter>
+
+    <!-- wax seal: blobby poured edge + glossy emboss -->
+    <filter id="wax" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="turbulence" baseFrequency=".07" numOctaves="2" seed="4" result="t"/>
+      <feDisplacementMap in="SourceGraphic" in2="t" scale="8" xChannelSelector="R" yChannelSelector="G" result="blob"/>
+      <feGaussianBlur in="blob" stdDeviation="1.6" result="bb"/>
+      <feSpecularLighting in="bb" surfaceScale="5" specularConstant=".9" specularExponent="20" lighting-color="#ffe0ea" result="sp">
+        <feDistantLight azimuth="225" elevation="42"/>
+      </feSpecularLighting>
+      <feComposite in="sp" in2="blob" operator="in" result="sp2"/>
+      <feDiffuseLighting in="bb" surfaceScale="3" diffuseConstant="1" lighting-color="#fff" result="df">
+        <feDistantLight azimuth="225" elevation="55"/>
+      </feDiffuseLighting>
+      <feComposite in="blob" in2="df" operator="arithmetic" k1="1" k2="0" k3="0" k4="0" result="lit"/>
+      <feDropShadow in="lit" dx="1" dy="2" stdDeviation="1.6" flood-color="#2a0a14" flood-opacity=".55" result="sh"/>
+      <feMerge><feMergeNode in="sh"/><feMergeNode in="lit"/><feMergeNode in="sp2"/></feMerge>
+    </filter>
+
+    <!-- debossed letter pressed into wax -->
+    <filter id="deboss">
+      <feOffset dx="-.8" dy="-.8" in="SourceAlpha" result="up"/>
+      <feFlood flood-color="#4a1229" flood-opacity=".9"/><feComposite in2="up" operator="in" result="dark"/>
+      <feOffset dx=".9" dy=".9" in="SourceAlpha" result="dn"/>
+      <feFlood flood-color="#ffd1e1" flood-opacity=".7"/><feComposite in2="dn" operator="in" result="lightE"/>
+      <feMerge><feMergeNode in="lightE"/><feMergeNode in="dark"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+
+    <!-- clouds for the ciel window -->
+    <filter id="clouds" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency=".018 .055" numOctaves="4" seed="21" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  2.1 0 0 0 -.95"/>
+      <feGaussianBlur stdDeviation=".6"/>
+    </filter>
+
+    <!-- aged gold for frames and fleurons -->
+    <filter id="aged" x="-10%" y="-40%" width="120%" height="180%">
+      <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="3" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 .35  0 0 0 0 .24  0 0 0 0 .08  0 0 0 1.4 -.7" result="tarnish"/>
+      <feComposite in="tarnish" in2="SourceGraphic" operator="in" result="tIn"/>
+      <feGaussianBlur in="SourceAlpha" stdDeviation=".7" result="b"/>
+      <feSpecularLighting in="b" surfaceScale="2" specularConstant="1" specularExponent="16" lighting-color="#fff2c2" result="s">
+        <feDistantLight azimuth="235" elevation="40"/>
+      </feSpecularLighting>
+      <feComposite in="s" in2="SourceGraphic" operator="in" result="sIn"/>
+      <feMerge><feMergeNode in="SourceGraphic"/><feMergeNode in="tIn"/><feMergeNode in="sIn"/></feMerge>
+    </filter>
+
+    <!-- candle glow -->
+    <filter id="glow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+
+    <!-- loose watercolor wash behind headings -->
+    <filter id="wash" x="-30%" y="-80%" width="160%" height="260%">
+      <feTurbulence type="fractalNoise" baseFrequency=".03" numOctaves="3" seed="17" result="t"/>
+      <feDisplacementMap in="SourceGraphic" in2="t" scale="22" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feGaussianBlur in="d" stdDeviation="2.4" result="b"/>
+      <feMorphology in="d" operator="erode" radius="2.2" result="e"/>
+      <feComposite in="d" in2="e" operator="out" result="rim"/>
+      <feGaussianBlur in="rim" stdDeviation=".7" result="rimb"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".6" numOctaves="2" seed="3" result="gr"/>
+      <feColorMatrix in="gr" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .6 -.2" result="grA"/>
+      <feComposite in="grA" in2="d" operator="in" result="bloom"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="rimb"/><feMergeNode in="bloom"/></feMerge>
+    </filter>
+
+    <!-- pressed flower: flattened, faded, slightly translucent, pressed into the page -->
+    <filter id="pressed" x="-20%" y="-20%" width="140%" height="140%">
+      <feColorMatrix type="saturate" values=".72" result="sat"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".3" numOctaves="2" seed="8" result="t"/>
+      <feDisplacementMap in="sat" in2="t" scale="1.4" result="d"/>
+      <feComponentTransfer in="d" result="fade"><feFuncA type="linear" slope=".82"/></feComponentTransfer>
+      <feMorphology in="SourceAlpha" operator="dilate" radius=".6" result="dil"/>
+      <feFlood flood-color="#7a5a3a" flood-opacity=".28"/><feComposite in2="dil" operator="in" result="stain"/>
+      <feOffset in="stain" dx=".6" dy=".8" result="stainO"/>
+      <feMerge><feMergeNode in="stainO"/><feMergeNode in="fade"/></feMerge>
+    </filter>
+
+    <!-- gold ring: torus highlight -->
+    <linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff2bf"/><stop offset=".3" stop-color="#e0b95a"/><stop offset=".55" stop-color="#9c7428"/><stop offset=".8" stop-color="#f0d27e"/><stop offset="1" stop-color="#7d5a1c"/>
+    </linearGradient>
+    <filter id="ringF" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="1.6" result="b"/>
+      <feSpecularLighting in="b" surfaceScale="5" specularConstant="1.3" specularExponent="26" lighting-color="#fff6d0" result="s">
+        <feDistantLight azimuth="225" elevation="38"/>
+      </feSpecularLighting>
+      <feComposite in="s" in2="SourceAlpha" operator="in" result="s2"/>
+      <feDropShadow in="SourceGraphic" dx="0" dy="1.5" stdDeviation="1.2" flood-color="#000" flood-opacity=".55" result="sh"/>
+      <feMerge><feMergeNode in="sh"/><feMergeNode in="s2"/></feMerge>
+    </filter>
+
+    <!-- film stock: warm grade, faded blacks, red halation -->
+    <filter id="film" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+      <feColorMatrix type="matrix" values="1.06 .06 0 0 .02  .03 1 .03 0 .01  0 .05 .88 0 .03  0 0 0 1 0" result="warm"/>
+      <feComponentTransfer in="warm" result="curve">
+        <feFuncR type="table" tableValues=".07 .32 .62 .87 1"/>
+        <feFuncG type="table" tableValues=".06 .29 .58 .84 .97"/>
+        <feFuncB type="table" tableValues=".11 .3 .54 .78 .9"/>
+      </feComponentTransfer>
+      <feGaussianBlur in="curve" stdDeviation="7" result="bl"/>
+      <feColorMatrix in="bl" type="matrix" values="1 0 0 0 0  0 .45 0 0 0  0 0 .25 0 0  0 0 0 .3 0" result="hal"/>
+      <feBlend in="curve" in2="hal" mode="screen"/>
+    </filter>
+    <!-- soft light leak -->
+    <filter id="leak" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="55"/></filter>
+    <!-- washi tape: torn ends + fibres -->
+    <filter id="tape" x="-6%" y="-30%" width="112%" height="160%">
+      <feTurbulence type="fractalNoise" baseFrequency=".3" numOctaves="2" seed="4" result="t"/>
+      <feDisplacementMap in="SourceGraphic" in2="t" scale="5" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".9 .2" numOctaves="1" seed="2" result="fib"/>
+      <feColorMatrix in="fib" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .45 -.12" result="fibA"/>
+      <feComposite in="fibA" in2="d" operator="in" result="fibIn"/>
+      <feMerge><feMergeNode in="d"/><feMergeNode in="fibIn"/></feMerge>
+    </filter>
+    <!-- orange LED date stamp glow -->
+    <filter id="stamp" x="-20%" y="-60%" width="140%" height="220%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="2.4" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <radialGradient id="vig" cx=".5" cy=".5" r=".72">
+      <stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#1a0d05" stop-opacity=".6"/>
+    </radialGradient>
+    <radialGradient id="grooves" cx=".5" cy=".5" r=".5">
+      <stop offset=".35" stop-color="#2a2018"/><stop offset=".4" stop-color="#0d0906"/><stop offset=".5" stop-color="#2a2018"/><stop offset=".55" stop-color="#0d0906"/>
+      <stop offset=".65" stop-color="#2a2018"/><stop offset=".7" stop-color="#0d0906"/><stop offset=".8" stop-color="#2a2018"/><stop offset=".86" stop-color="#0d0906"/><stop offset=".95" stop-color="#2a2018"/><stop offset="1" stop-color="#0d0906"/>
+    </radialGradient>
+    <pattern id="grainPat" width="240" height="240" patternUnits="userSpaceOnUse"><image id="grainImg" width="240" height="240"/></pattern>
+
+    <!-- candle smoke: a soft line pulled apart by slowly shifting noise -->
+    <filter id="smoke" x="-150%" y="-20%" width="400%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency=".03 .07" numOctaves="2" seed="3" result="n">
+        <animate attributeName="baseFrequency" dur="9s" values=".03 .07;.036 .06;.03 .07" repeatCount="indefinite"/>
+      </feTurbulence>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="18" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feGaussianBlur in="d" stdDeviation="1.4"/>
+    </filter>
+    <!-- tooled leather for book spines -->
+    <filter id="leatherF" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency=".55" numOctaves="3" seed="8" result="n"/>
+      <feDiffuseLighting in="n" surfaceScale="1.4" lighting-color="#fff" result="l"><feDistantLight azimuth="235" elevation="58"/></feDiffuseLighting>
+      <feComposite in="l" in2="SourceGraphic" operator="arithmetic" k1="1.15" k2="0" k3="0" k4="0" result="t"/>
+      <feComposite in="t" in2="SourceAlpha" operator="in"/>
+    </filter>
+    <!-- oak shelf grain -->
+    <filter id="wood" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency=".004 .35" numOctaves="3" seed="12" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 .5 .2  0 0 0 .32 .12  0 0 0 .18 .06  0 0 0 0 1" result="g"/>
+      <feComposite in="g" in2="SourceAlpha" operator="in"/>
+    </filter>
+    <!-- glass inkwell sheen -->
+    <filter id="glass" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2" result="b"/>
+      <feSpecularLighting in="b" surfaceScale="6" specularConstant="1.4" specularExponent="34" lighting-color="#fff" result="s"><fePointLight x="10" y="-20" z="60"/></feSpecularLighting>
+      <feComposite in="s" in2="SourceAlpha" operator="in" result="s2"/>
+      <feMerge><feMergeNode in="SourceGraphic"/><feMergeNode in="s2"/></feMerge>
+    </filter>
+
+    <!-- soft ink for line drawings -->
+    <filter id="ink" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency=".09" numOctaves="2" seed="13" result="t"/>
+      <feDisplacementMap in="SourceGraphic" in2="t" scale="1.8"/>
+    </filter>
+  </defs>
+</svg>
+
+<div class="wrap">
+  <header class="top">
+    <svg class="deco-hyd" id="decoHyd" viewBox="0 0 230 200" aria-hidden="true"></svg>
+    <svg class="deco-lily" id="decoLily" viewBox="0 0 120 170" aria-hidden="true"></svg>
+    <svg class="candle-art" id="candleArt" viewBox="0 0 64 130" aria-hidden="true"></svg>
+    <div>
+      <svg class="window-art" id="windowArt" viewBox="0 0 96 146" role="img" aria-label="A gothic window looking out on the sky"></svg>
+      <div class="window-cap">ciel</div>
+    </div>
+    <div>
+      <svg class="title-art" viewBox="0 0 560 92" role="img" aria-label="The Reading Room">
+        <text x="2" y="66" font-family="Cormorant Garamond, Garamond, serif" font-style="italic" font-weight="600" font-size="70" fill="url(#goldGrad)" filter="url(#foil)">The Reading Room</text>
+      </svg>
+      <p class="kicker">Jenni&rsquo;s shelf</p>
+      <p class="tagline">A record of what she reads, and what she should read next.</p>
+    </div>
+  </header>
+
+  <svg class="motto" id="motto" viewBox="150 0 400 44" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Sapere aude, dare to know"></svg>
+
+  <nav class="tabs" aria-label="Sections">
+    <a href="#today" data-view="today">Today</a>
+    <a href="#shelf" data-view="shelf">Shelf <span class="n" id="nShelf"></span></a>
+    <a href="#next" data-view="next">Read next</a>
+    <a href="#kinokuniya" data-view="kinokuniya">Kinokuniya<span class="hide-sm"> list</span> <span class="n" id="nWish"></span></a>
+    <a href="#photos" data-view="photos">Photos</a>
+  </nav>
+
+  <div class="banner" id="banner" hidden></div>
+
+  <main id="views">
+    <!-- TODAY -->
+    <section id="v-today" data-v="today" hidden>
+      <div class="card ornate today singed">
+        <svg class="today-flower" id="todayFlower" viewBox="0 0 170 110" aria-hidden="true"></svg>
+        <p class="today-date" id="todayDate"></p>
+        <h2>Today&rsquo;s affirmation</h2>
+        <p class="affirm" id="affirm"></p>
+        <div class="actions"><button class="btn ghost" type="button" id="moreAffirm">One more</button></div>
+      </div>
+      <div class="card from-shelf" id="fromShelf" hidden></div>
+      <div class="buzz" id="buzz">
+        <div class="bubble" id="bubble" hidden aria-live="polite"></div>
+        <button type="button" id="buzzBtn" aria-label="Tap the buzz ball"><svg viewBox="0 0 84 96" id="buzzArt"></svg></button>
+        <span class="buzz-cap">tap for wisdom</span>
+      </div>
+    </section>
+
+    <!-- SHELF -->
+    <section id="v-shelf" data-v="shelf">
+      <form class="card ornate quill-card" id="logForm" autocomplete="off">
+        <svg class="quill" id="quillArt" viewBox="0 0 74 86" aria-hidden="true"></svg>
+        <h2>Shelve a book</h2>
+        <p class="sub">Title, a rating in hydrangeas, one line. Your real journal keeps the rest.</p>
+        <div class="form">
+          <div class="row2">
+            <div><label class="lbl" for="fTitle">Title</label><input type="text" id="fTitle" maxlength="120" placeholder="Frankenstein" required></div>
+            <div><label class="lbl" for="fAuthor">Author (optional)</label><input type="text" id="fAuthor" maxlength="80" placeholder="Mary Shelley"></div>
+          </div>
+          <div>
+            <span class="lbl" id="rateLbl">Your rating</span>
+            <div class="rating" id="rateInput" role="radiogroup" aria-labelledby="rateLbl"></div>
+          </div>
+          <div><label class="lbl" for="fThought">One line about it</label><input type="text" id="fThought" maxlength="200" placeholder="The monster deserved better."></div>
+          <div class="actions">
+            <button class="btn" type="submit" id="logBtn">Shelve it</button>
+            <span class="err" id="logErr" role="alert"></span>
+          </div>
+        </div>
+      </form>
+
+      <div class="stats" id="stats"></div>
+
+      <div class="section-head"><h3>Gold rings</h3><span class="meta" id="badgeMeta"></span></div>
+      <div class="badges" id="badges"></div>
+
+      <div class="section-head"><h3>On the shelf</h3><span class="meta" id="shelfMeta"></span></div>
+      <div id="shelfList"></div>
+    </section>
+
+    <!-- READ NEXT -->
+    <section id="v-next" data-v="next" hidden>
+      <div class="card ornate">
+        <h2>Read next</h2>
+        <p class="sub">Picked from what you&rsquo;ve shelved, with the reason for each.</p>
+        <div class="actions">
+          <button class="btn pinkb" id="findBtn" type="button">Find my next read</button>
+          <span class="source" id="recSource"></span>
+        </div>
+        <p class="err" id="recErr" role="alert"></p>
+      </div>
+      <div id="recFinding" hidden>
+        <div class="finding">
+          <svg viewBox="0 0 44 64" aria-hidden="true">
+            <ellipse cx="22" cy="24" rx="16" ry="16" fill="url(#flameGrad)" opacity=".45" filter="url(#glow)"/>
+            <g class="flame"><path d="M22 10 C27 18 29 22 26 28 C24 31 20 31 18 28 C15 23 18 18 22 10 Z" fill="url(#flameGrad)" filter="url(#glow)"/></g>
+            <rect x="15" y="31" width="14" height="28" rx="2" fill="#efe2c8"/>
+            <path d="M15 34 q3 4 0 8" stroke="#d9c7a3" stroke-width="2" fill="none"/>
+            <line x1="22" y1="28" x2="22" y2="32" stroke="#2a1d14" stroke-width="1.4"/>
+          </svg>
+          <span style="font-style:italic;color:#e3d2b0">Searching the stacks&hellip;</span>
+        </div>
+      </div>
+      <div id="recList"></div>
+    </section>
+
+    <!-- KINOKUNIYA -->
+    <section id="v-kinokuniya" data-v="kinokuniya" hidden>
+      <div class="card ornate">
+        <h2>Kinokuniya list</h2>
+        <p class="sub">Books to look for on the next bookstore date.</p>
+        <div id="wishSummary" class="hint"></div>
+        <svg class="card-caca" id="cacaCard" viewBox="0 0 170 110" aria-hidden="true"></svg>
+      </div>
+      <div id="wishList"></div>
+    </section>
+    <!-- PHOTOS -->
+    <section id="v-photos" data-v="photos" hidden>
+      <div class="card ornate">
+        <h2>The scrapbook</h2>
+        <p class="sub">Photo booths, Kanpeki, TESO, the bakery, the dock, and everything in between.</p>
+        <p class="hint">Tap any photo to see it bigger.</p>
+      </div>
+      <div class="filmstrip" id="filmstrip" role="list" aria-label="All photos"></div>
+      <div class="scrap" id="scrap"></div>
+    </section>
+  </main>
+
+  <svg class="shelf-art" id="shelfArt" viewBox="0 0 700 120" aria-hidden="true"></svg>
+  <footer>
+    <svg class="exlibris" id="exlibris" viewBox="0 0 230 74" role="img" aria-label="Ex libris, Jenni"></svg>
+    <div class="seal-row">
+      <svg class="foot-caca" id="cacaL" viewBox="0 0 170 110" aria-hidden="true"></svg>
+      <button type="button" id="sealBtn" aria-label="Open the seal">
+        <svg class="seal" viewBox="0 0 140 140" id="footSeal"></svg>
+      </button>
+      <svg class="foot-caca r" id="cacaR" viewBox="0 0 170 110" aria-hidden="true"></svg>
+    </div>
+    <p class="ps" id="ps" aria-live="polite"></p>
+  </footer>
+</div>
+
+<div class="soundbar" id="soundbar">
+  <div class="sb-panel" id="sbPanel" hidden></div>
+  <div class="sb-row">
+    <svg class="vinyl" viewBox="0 0 60 60" aria-hidden="true">
+      <circle cx="30" cy="30" r="28" fill="#120c08"/>
+      <circle cx="30" cy="30" r="28" fill="url(#grooves)"/>
+      <circle cx="30" cy="30" r="11" fill="url(#waxGrad)" filter="url(#wcs)"/>
+      <circle cx="30" cy="30" r="1.8" fill="#120c08"/>
+      <path d="M12 18 A 22 22 0 0 1 26 9" stroke="#fff" stroke-opacity=".22" stroke-width="2" fill="none"/>
+    </svg>
+    <div class="sb-meta">
+      <span class="sb-k">Now spinning</span>
+      <span class="sb-t">&#9734; shoujo dream, a playlist &#9825;</span>
+    </div>
+    <svg class="eq" viewBox="0 0 34 24" aria-hidden="true"><g fill="url(#goldGrad)">
+      <rect x="1" y="6" width="4" height="18" rx="1"/><rect x="8" y="2" width="4" height="22" rx="1"/><rect x="15" y="10" width="4" height="14" rx="1"/><rect x="22" y="4" width="4" height="20" rx="1"/><rect x="29" y="12" width="4" height="12" rx="1"/></g></svg>
+    <a class="btn pinkb sb-play" id="sbPlay" href="https://open.spotify.com/playlist/5qV1bqXR7ars4wGcUUyTi7" target="_blank" rel="noopener">Play</a>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true" aria-label="Photo">
+  <button type="button" class="lb-close" id="lbClose" aria-label="Close">&times;</button>
+  <button type="button" class="lb-nav prev" id="lbPrev" aria-label="Previous photo">&#8249;</button>
+  <figure class="lb-fig"><svg id="lbSvg"></svg></figure>
+  <button type="button" class="lb-nav next" id="lbNext" aria-label="Next photo">&#8250;</button>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+function rng(seed){ return function(){ seed|=0; seed=seed+0x6D2B79F5|0; let t=Math.imul(seed^seed>>>15,1|seed); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
+/* ---------- textures as data-URI SVGs (filters rendered once, cached as images) ---------- */
+function svgUrl(s){ return 'url("data:image/svg+xml,' + encodeURIComponent(s) + '")'; }
+const paper = `<svg xmlns="http://www.w3.org/2000/svg" width="420" height="420">
+<filter id="p" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="5" seed="3" stitchTiles="stitch"/>
+<feDiffuseLighting lighting-color="#f4e8d0" surfaceScale="1.6"><feDistantLight azimuth="45" elevation="62"/></feDiffuseLighting></filter>
+<filter id="f" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".012" numOctaves="3" seed="8" stitchTiles="stitch"/>
+<feColorMatrix type="matrix" values="0 0 0 0 .55  0 0 0 0 .38  0 0 0 0 .18  0 0 0 -3.2 1.75"/></filter>
+<filter id="fib" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".9 .02" numOctaves="2" seed="5" stitchTiles="stitch"/>
+<feColorMatrix type="matrix" values="0 0 0 0 .4  0 0 0 0 .3  0 0 0 0 .2  0 0 0 .5 -.18"/></filter>
+<rect width="420" height="420" filter="url(#p)" opacity=".55"/><rect width="420" height="420" filter="url(#f)" opacity=".22"/><rect width="420" height="420" filter="url(#fib)" opacity=".35"/></svg>`;
+const deckle = `<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" preserveAspectRatio="none" viewBox="0 0 600 400">
+<filter id="d" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency=".09" numOctaves="3" seed="2"/>
+<feDisplacementMap in="SourceGraphic" scale="9" xChannelSelector="R" yChannelSelector="G"/></filter>
+<rect x="5" y="5" width="590" height="390" fill="#fff" filter="url(#d)"/></svg>`;
+const grain = `<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240"><filter id="g"><feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="3" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter><rect width="240" height="240" filter="url(#g)"/></svg>`;
+const leather = `<svg xmlns="http://www.w3.org/2000/svg" width="320" height="320"><filter id="l" x="0" y="0" width="100%" height="100%">
+<feTurbulence type="turbulence" baseFrequency=".028" numOctaves="4" seed="6" stitchTiles="stitch" result="n"/>
+<feDiffuseLighting in="n" lighting-color="#4b3120" surfaceScale="1.4"><feDistantLight azimuth="60" elevation="48"/></feDiffuseLighting></filter>
+<filter id="c" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".25" numOctaves="2" seed="2" stitchTiles="stitch"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1.2 -.55"/></filter>
+<rect width="320" height="320" filter="url(#l)"/><rect width="320" height="320" filter="url(#c)" opacity=".5"/></svg>`;
+const silk = `<svg xmlns="http://www.w3.org/2000/svg" width="90" height="60"><filter id="s" x="0" y="0" width="100%" height="100%">
+<feTurbulence type="fractalNoise" baseFrequency=".32 .006" numOctaves="2" seed="4" stitchTiles="stitch"/>
+<feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .75 -.28"/></filter>
+<linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".45" stop-color="#fff" stop-opacity=".16"/><stop offset=".6" stop-color="#fff" stop-opacity="0"/></linearGradient>
+<rect width="90" height="60" filter="url(#s)"/><rect width="90" height="60" fill="url(#g)"/></svg>`;
+const brass = `<svg xmlns="http://www.w3.org/2000/svg" width="220" height="90"><filter id="b" x="0" y="0" width="100%" height="100%">
+<feTurbulence type="fractalNoise" baseFrequency=".003 .9" numOctaves="2" seed="9" stitchTiles="stitch" result="n"/>
+<feColorMatrix in="n" type="matrix" values="0 0 0 0 .86  0 0 0 0 .68  0 0 0 0 .32  0 0 0 1 -.15"/></filter>
+<rect width="220" height="90" filter="url(#b)"/></svg>`;
+const ring = `<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160"><filter id="r" x="-20%" y="-20%" width="140%" height="140%">
+<feTurbulence type="fractalNoise" baseFrequency=".05" numOctaves="3" seed="12"/><feDisplacementMap in="SourceGraphic" scale="9"/><feGaussianBlur stdDeviation=".7"/></filter>
+<g filter="url(#r)"><circle cx="80" cy="80" r="55" fill="#7a5230" fill-opacity=".05" stroke="#6b4423" stroke-width="5" stroke-opacity=".2"/>
+<circle cx="80" cy="80" r="50" fill="none" stroke="#6b4423" stroke-width="1.4" stroke-opacity=".13"/>
+<path d="M30 60 A 55 55 0 0 1 70 26" fill="none" stroke="#5a3519" stroke-width="7" stroke-opacity=".12"/></g></svg>`;
+const splat = (function(){ const R=rng(55); let c='';
+  for(let i=0;i<16;i++){ const a=R()*6.28, d=10+R()*48; c+=`<circle cx="${(85+Math.cos(a)*d).toFixed(1)}" cy="${(60+Math.sin(a)*d*.7).toFixed(1)}" r="${(.8+R()*3.2).toFixed(1)}"/>`; }
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="170" height="120"><filter id="k" x="-30%" y="-30%" width="160%" height="160%">
+<feTurbulence type="fractalNoise" baseFrequency=".09" numOctaves="2" seed="21"/><feDisplacementMap in="SourceGraphic" scale="8"/>
+<feGaussianBlur stdDeviation=".4"/></filter><g filter="url(#k)" fill="#4b1520" fill-opacity=".2">
+<ellipse cx="85" cy="60" rx="17" ry="12"/>${c}</g></svg>`; })();
+const rs = document.documentElement.style;
+rs.setProperty('--leather-img', svgUrl(leather));
+rs.setProperty('--silk-img', svgUrl(silk));
+rs.setProperty('--brass-img', svgUrl(brass));
+rs.setProperty('--ring-img', svgUrl(ring));
+rs.setProperty('--splat-img', svgUrl(splat));
+rs.setProperty('--paper-img', svgUrl(paper));
+rs.setProperty('--deckle-img', svgUrl(deckle));
+rs.setProperty('--grain-img', svgUrl(grain));
+
+/* ---------- seeded drawing helpers ---------- */
+function floret(x,y,s,rot,fill){
+  let p = `<g transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${rot.toFixed(0)})">`;
+  for(let k=0;k<4;k++) p += `<ellipse cx="0" cy="${(-s*.52).toFixed(2)}" rx="${(s*.4).toFixed(2)}" ry="${(s*.55).toFixed(2)}" transform="rotate(${k*90})" fill="${fill}"/>`;
+  return p + `<circle r="${(s*.13).toFixed(2)}" fill="#fff8ee" opacity=".75"/></g>`;
+}
+function hydCluster(cx,cy,r,n,palette,seed){
+  const R=rng(seed); let g='';
+  for(let i=0;i<n;i++){
+    const a=R()*Math.PI*2, d=Math.sqrt(R())*r;
+    const x=cx+Math.cos(a)*d, y=cy+Math.sin(a)*d*.85;
+    g+=floret(x,y,r*(.17+R()*.08),R()*90,palette[Math.floor(R()*palette.length)]);
+  }
+  return g;
+}
+function leaf(x,y,len,w,rot,fill){
+  return `<path transform="translate(${x} ${y}) rotate(${rot})" d="M0 0 C ${w} ${-len*.3}, ${w*.8} ${-len*.75}, 0 ${-len} C ${-w*.8} ${-len*.75}, ${-w} ${-len*.3}, 0 0 Z" fill="${fill}"/>
+  <path transform="translate(${x} ${y}) rotate(${rot})" d="M0 0 L0 ${-len*.92}" stroke="#1e3020" stroke-width=".8" opacity=".5"/>`;
+}
+
+/* cacahuananche (Gliricidia): pink-lilac pea flowers clustered on a bare woody branch */
+function pea(x,y,sc,rot){
+  return `<g transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${rot.toFixed(0)}) scale(${sc.toFixed(2)})">
+    <path d="M0 1 C -6.5 -1 -7.5 -9.5 0 -10.5 C 7.5 -9.5 6.5 -1 0 1 Z" fill="#f5c4dd"/>
+    <path d="M0 -.5 C -1.8 -4 -1.2 -6.5 0 -7.6 C 1.2 -6.5 1.8 -4 0 -.5 Z" fill="#c9679f" opacity=".75"/>
+    <path d="M-3 1 C -5 3 -4 5.5 -1.5 5 Z M3 1 C 5 3 4 5.5 1.5 5 Z" fill="#dca0cf"/>
+    <ellipse cx="0" cy="3.2" rx="2.2" ry="3.1" fill="#ad74b8"/></g>`;
+}
+function cacaBranch(W,H,seed){
+  const R=rng(seed);
+  const P=[[4,H*.86],[W*.32,H*.78],[W*.58,H*.58],[W-6,H*.3]];
+  const pt=t=>{const u=1-t; return [0,1].map(i=>u*u*u*P[0][i]+3*u*u*t*P[1][i]+3*u*t*t*P[2][i]+t*t*t*P[3][i]);};
+  let wood=`<path d="M${P[0]} C ${P[1]}, ${P[2]}, ${P[3]}" stroke="#4a3524" stroke-width="3.4" fill="none" stroke-linecap="round"/>`;
+  let fl='';
+  [.22,.42,.6,.78,.97].forEach((t,i)=>{
+    const [x,y]=pt(t); const ang=(-100+(R()*70-35))*Math.PI/180, len=8+R()*12;
+    const tx=x+Math.cos(ang)*len, ty=y+Math.sin(ang)*len;
+    wood+=`<path d="M${x.toFixed(1)} ${y.toFixed(1)} Q ${(x+tx)/2+3} ${(y+ty)/2} ${tx.toFixed(1)} ${ty.toFixed(1)}" stroke="#4a3524" stroke-width="1.6" fill="none" stroke-linecap="round"/>`;
+    const n=5+Math.floor(R()*4);
+    for(let k=0;k<n;k++){
+      const a=ang+(R()-.5)*1.9, d=2+k*3.1;
+      const fx=tx+Math.cos(a)*d, fy=ty+Math.sin(a)*d;
+      if(k>=n-2) fl+=`<ellipse cx="${fx.toFixed(1)}" cy="${fy.toFixed(1)}" rx="1.7" ry="3" transform="rotate(${(a*180/Math.PI+90).toFixed(0)} ${fx.toFixed(1)} ${fy.toFixed(1)})" fill="#d68fbb"/>`;
+      else fl+=pea(fx,fy,.62+R()*.38,a*180/Math.PI+90+(R()*40-20));
+    }
+  });
+  return `<g filter="url(#ink)">${wood}</g><g filter="url(#wc)">${fl}</g>`;
+}
+document.getElementById('cacaL').innerHTML=cacaBranch(170,110,12);
+document.getElementById('cacaR').innerHTML=cacaBranch(170,110,27);
+document.getElementById('cacaCard').innerHTML=cacaBranch(170,110,44);
+
+/* rating hydrangea symbol */
+(function(){
+  const defs=document.querySelector('svg.defs defs');
+  const pts=[[0,-5],[-5,-1.5],[5,-1.5],[-3,4],[3,4],[0,0],[-7,3],[7,3]];
+  const fills=['var(--ha)','var(--hb)','var(--ha)','var(--hc)','var(--hb)','var(--ha)','var(--hb)','var(--hc)'];
+  let s=`<symbol id="hyd" viewBox="-13 -13 26 26">`;
+  s+=`<path d="M-2 9 C -9 6 -12 11 -12 12 C -6 13 -3 11 -2 9 Z" fill="var(--hl)"/><path d="M2 9 C 9 6 12 11 12 12 C 6 13 3 11 2 9 Z" fill="var(--hl)"/>`;
+  pts.forEach((p,i)=>{ s+=floret(p[0],p[1],5.6,i*23,fills[i]); });
+  s+=`</symbol>`;
+  defs.insertAdjacentHTML('beforeend', s);
+})();
+function hydIcon(on){ return `<svg viewBox="0 0 26 26" class="${on?'hyd-on':'hyd-off'}" aria-hidden="true"><use href="#hyd" filter="url(#wcs)"/></svg>`; }
+
+/* header hydrangea, lily of the valley + cacahuananche */
+(function(){
+  const pal1=['#b6a4ec','#9d8be0','#c9b8f2','#e8a3bc','#8db7de'];
+  const pal2=['#eea2c0','#d98aae','#f5c3d6','#b6a4ec'];
+  let s=`<g filter="url(#wc)">`;
+  s+=leaf(150,150,70,22,-35,'#3f5e3c')+leaf(170,150,64,20,30,'#4d6e45')+leaf(120,160,52,16,-70,'#365236');
+  s+=hydCluster(160,82,58,70,pal1,4);
+  s+=hydCluster(84,58,34,32,pal2,9);
+  s+=`</g>`;
+  // cacahuananche raceme (pink-lilac pea flowers)
+  const R=rng(31); let c=`<g filter="url(#wc)"><path d="M40 150 C 46 120, 30 92, 22 62" stroke="#5b4a2f" stroke-width="2" fill="none"/>`;
+  for(let i=0;i<9;i++){
+    const t=i/8, x=40+(22-40)*t+Math.sin(t*3)*6, y=150+(62-150)*t; const side=i%2?1:-1;
+    const fx=x+side*(7+R()*3), fy=y-2;
+    c+=pea(fx,fy,.8+R()*.3,side*25+R()*20-10);
+  }
+  c+=`</g>`;
+  document.getElementById('decoHyd').innerHTML=s+c;
+
+  // lily of the valley
+  let l=`<g filter="url(#wc)">`+leaf(52,168,150,26,8,'#3a5a3a')+leaf(70,168,120,20,24,'#4b6d47')+`</g>`;
+  l+=`<g filter="url(#ink)"><path d="M58 166 C 60 120, 70 80, 96 52" stroke="#5f7d4f" stroke-width="2" fill="none"/>`;
+  const bells=[[66,118],[70,104],[75,91],[81,79],[88,67],[95,56]];
+  bells.forEach((b,i)=>{
+    const bx=b[0]+12, by=b[1]+8;
+    l+=`<path d="M${b[0]} ${b[1]} q 7 1 ${bx-b[0]} ${by-b[1]-6}" stroke="#5f7d4f" stroke-width="1.2" fill="none"/>`;
+    const s=1-i*.07;
+    l+=`<path transform="translate(${bx} ${by}) scale(${s})" d="M-5 0 Q -5 -7 0 -7 Q 5 -7 5 0 Q 3 2 1.6 .4 Q 0 2.4 -1.6 .4 Q -3 2 -5 0 Z" fill="#f8f3e8" stroke="#cfc6b0" stroke-width=".5"/>`;
+  });
+  l+=`</g>`;
+  document.getElementById('decoLily').innerHTML=l;
+})();
+
+/* ciel window */
+(function(){
+  const arch="M8 140 L8 50 C 8 22, 30 6, 48 4 C 66 6, 88 22, 88 50 L88 140 Z";
+  const R=rng(77); let stars='';
+  for(let i=0;i<14;i++){ stars+=`<circle cx="${(14+R()*68).toFixed(1)}" cy="${(16+R()*44).toFixed(1)}" r="${(.5+R()*.9).toFixed(2)}" fill="#fffbe8" opacity="${(.5+R()*.5).toFixed(2)}"/>`; }
+  document.getElementById('windowArt').innerHTML=`
+    <defs><clipPath id="archClip"><path d="${arch}"/></clipPath></defs>
+    <g clip-path="url(#archClip)">
+      <rect x="0" y="0" width="96" height="146" fill="url(#skyGrad)"/>
+      ${stars}
+      <circle cx="66" cy="34" r="7" fill="#fff6dc" filter="url(#glow)" opacity=".9"/>
+      <rect x="0" y="40" width="96" height="106" filter="url(#clouds)" opacity=".85"/>
+    </g>
+    <g filter="url(#aged)">
+      <path d="${arch}" fill="none" stroke="url(#goldGrad)" stroke-width="5"/>
+      <path d="M48 6 L48 140 M8 78 L88 78" stroke="url(#goldGrad)" stroke-width="2.4"/>
+      <path d="M30 26 C 40 38, 56 38, 66 26" stroke="url(#goldGrad)" stroke-width="1.6" fill="none"/>
+      <rect x="2" y="138" width="92" height="7" rx="1" fill="url(#goldGrad)"/>
+    </g>`;
+})();
+
+/* fleuron divider */
+
+
+/* watercolor washes behind headings */
+const WASH=['#ab9ce3','#e8a3bc','#8db7de'];
+function washSVG(i, light){
+  const R=rng(90+i), c=WASH[i%3];
+  let blobs=`<ellipse cx="120" cy="30" rx="112" ry="17" fill="${c}"/>`;
+  for(let k=0;k<3;k++) blobs+=`<ellipse cx="${(40+R()*200).toFixed(0)}" cy="${(24+R()*14).toFixed(0)}" rx="${(20+R()*30).toFixed(0)}" ry="${(8+R()*6).toFixed(0)}" fill="${WASH[(i+k+1)%3]}"/>`;
+  return `<svg class="wash" viewBox="0 0 260 60" preserveAspectRatio="none" aria-hidden="true"><g filter="url(#wash)" opacity="${light?.32:.42}">${blobs}</g></svg>`;
+}
+document.querySelectorAll('.card.ornate h2, .section-head h3').forEach((h,i)=>h.insertAdjacentHTML('afterbegin', washSVG(i, h.tagName==='H3')));
+
+/* marbled endpaper + singed edge textures */
+const marble = `<svg xmlns="http://www.w3.org/2000/svg" width="360" height="360">
+<defs><pattern id="st" width="360" height="36" patternUnits="userSpaceOnUse">
+<rect width="360" height="12" fill="#6e1f2a"/><rect y="12" width="360" height="7" fill="#26392d"/><rect y="19" width="360" height="5" fill="#c9a24c"/><rect y="24" width="360" height="8" fill="#2b3550"/><rect y="32" width="360" height="4" fill="#efe2c8"/></pattern>
+<filter id="m" x="0" y="0" width="100%" height="100%"><feTurbulence type="turbulence" baseFrequency=".006 .012" numOctaves="3" seed="19" stitchTiles="stitch" result="n"/>
+<feDisplacementMap in="SourceGraphic" in2="n" scale="140" xChannelSelector="R" yChannelSelector="G" result="d"/>
+<feTurbulence type="fractalNoise" baseFrequency=".03" numOctaves="2" seed="4" stitchTiles="stitch" result="n2"/>
+<feDisplacementMap in="d" in2="n2" scale="30"/></filter></defs>
+<rect x="-80" y="-80" width="520" height="520" fill="url(#st)" filter="url(#m)"/></svg>`;
+const singe = `<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400" preserveAspectRatio="none">
+<filter id="b" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="4" seed="27" result="n"/>
+<feDisplacementMap in="SourceGraphic" in2="n" scale="38" xChannelSelector="R" yChannelSelector="G" result="d"/><feGaussianBlur in="d" stdDeviation="7"/></filter>
+<filter id="e" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="4" seed="27" result="n"/>
+<feDisplacementMap in="SourceGraphic" in2="n" scale="38" xChannelSelector="R" yChannelSelector="G" result="d"/><feGaussianBlur in="d" stdDeviation="1.5"/></filter>
+<rect x="0" y="0" width="600" height="400" fill="none" stroke="#3a1a08" stroke-width="58" filter="url(#b)" opacity=".75"/>
+<rect x="22" y="22" width="556" height="356" fill="none" stroke="#a5521e" stroke-width="3" filter="url(#e)" opacity=".35"/></svg>`;
+rs.setProperty('--marble-img', svgUrl(marble));
+rs.setProperty('--singe-img', svgUrl(singe));
+
+/* candle on a brass holder, with drifting smoke */
+document.getElementById('candleArt').innerHTML=`
+  <path d="M33 34 C 30 24, 38 18, 33 6 C 29 -2, 37 -6, 34 -14" stroke="#d8cbb5" stroke-width="2.2" fill="none" opacity=".45" filter="url(#smoke)"/>
+  <circle cx="32" cy="42" r="20" fill="url(#flameGrad)" opacity=".35" filter="url(#glow)" class="flicker"/>
+  <g class="flame" style="transform-origin:32px 50px"><path d="M32 30 C 37 38 39 43 36 49 C 34 52 30 52 28 49 C 25 44 28 38 32 30 Z" fill="url(#flameGrad)" filter="url(#glow)"/>
+  <path d="M32 40 C 34 44 34 47 32 49 C 30 47 30 44 32 40 Z" fill="#fff" opacity=".7"/></g>
+  <line x1="32" y1="48" x2="32" y2="53" stroke="#1d130c" stroke-width="1.4"/>
+  <rect x="23" y="52" width="18" height="50" rx="2" fill="#efe2c8" filter="url(#wcs)"/>
+  <path d="M23 54 q 3 10 0 16 q -2 4 1 5 M41 55 q -2 7 0 12" stroke="#e2d2b0" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <rect x="23" y="52" width="6" height="50" fill="#fff" opacity=".18"/>
+  <g filter="url(#aged)">
+    <ellipse cx="32" cy="104" rx="16" ry="4" fill="url(#goldGrad)"/>
+    <path d="M26 104 C 26 112, 22 116, 20 120 L 44 120 C 42 116, 38 112, 38 104 Z" fill="url(#goldGrad)"/>
+    <ellipse cx="32" cy="121" rx="26" ry="6" fill="url(#goldGrad)"/>
+    <path d="M56 119 C 64 118, 64 108, 56 108" stroke="url(#goldGrad)" stroke-width="3" fill="none"/>
+  </g>`;
+if(matchMedia('(prefers-reduced-motion: reduce)').matches) document.querySelectorAll('#smoke animate').forEach(a=>a.remove());
+
+/* motto ribbon: sapere aude */
+document.getElementById('motto').innerHTML=`
+  <g filter="url(#aged)">
+    <line x1="20" y1="22" x2="220" y2="22" stroke="url(#goldLine)" stroke-width="1.5"/>
+    <line x1="480" y1="22" x2="680" y2="22" stroke="url(#goldLine)" stroke-width="1.5"/>
+    <circle cx="214" cy="22" r="2.4" fill="url(#goldGrad)"/><circle cx="486" cy="22" r="2.4" fill="url(#goldGrad)"/>
+  </g>
+  <path d="M232 10 L250 10 L250 38 L232 38 L240 24 Z M468 10 L450 10 L450 38 L468 38 L460 24 Z" fill="#4a1520"/>
+  <path d="M246 6 L454 6 L454 34 L246 34 Z" fill="#7a2432" filter="url(#leatherF)"/>
+  <path d="M246 34 L250 38 L250 34 Z M454 34 L450 38 L450 34 Z" fill="#2c0b12"/>
+  <path d="M252 10 H448 M252 30 H448" stroke="url(#goldGrad)" stroke-width=".9" opacity=".8"/>
+  <text x="350" y="25.5" text-anchor="middle" font-family="IM Fell English SC, serif" font-size="15" letter-spacing="5" fill="url(#goldGrad)" filter="url(#foil)">SAPERE AUDE</text>`;
+
+/* quill in an inkwell */
+document.getElementById('quillArt').innerHTML=(function(){
+  let barbs='';
+  for(let k=0;k<22;k++){ const t=k/21, x=18+t*36, y=70-t*62; const len=6+Math.sin(t*Math.PI)*10;
+    barbs+=`<line x1="${x.toFixed(1)}" y1="${y.toFixed(1)}" x2="${(x-len*.85).toFixed(1)}" y2="${(y-len*.25).toFixed(1)}"/>`;
+    barbs+=`<line x1="${x.toFixed(1)}" y1="${y.toFixed(1)}" x2="${(x+len*.35).toFixed(1)}" y2="${(y+len*.55).toFixed(1)}"/>`; }
+  return `<ellipse cx="34" cy="80" rx="22" ry="4" fill="#2a1d14" opacity=".25" filter="url(#wash)"/>
+  <g filter="url(#ink)"><g stroke="#f2ebe0" stroke-width="1.1" opacity=".9">${barbs}</g>
+  <path d="M16 74 L56 6" stroke="#cbbfa8" stroke-width="1.6"/></g>
+  <path d="M14 78 L18 70" stroke="url(#goldGrad)" stroke-width="2.4" filter="url(#aged)"/>
+  <g filter="url(#glass)"><path d="M6 60 C 4 66 6 80 10 82 L 30 82 C 34 80 36 66 34 60 Z" fill="#1d2433"/>
+  <rect x="11" y="54" width="18" height="7" rx="2" fill="#2b3550"/></g>
+  <path d="M9 66 C 9 72 10 76 12 78" stroke="#fff" stroke-width="1.2" opacity=".35" fill="none"/>`;
+})();
+
+/* leather-bound bookshelf above the endpaper footer */
+document.getElementById('shelfArt').innerHTML=(function(){
+  const R=rng(911), cols=['#6e1f2a','#26392d','#2b3550','#4b2a45','#5a3b1e','#3a2a4d','#7a4a1e','#1f3a3a'];
+  let x=14, books='', bands='';
+  while(x<640){
+    const w=14+Math.floor(R()*16), h=58+Math.floor(R()*38), y=100-h, c=cols[Math.floor(R()*cols.length)];
+    const lean = R()<.07 && x>60 && x<560;
+    const tf = lean ? ` transform="rotate(-9 ${x} 100)"` : '';
+    books+=`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="1.5" fill="${c}"${tf}/>`;
+    bands+=`<g${tf}><rect x="${x}" y="${y}" width="${w}" height="${h}" fill="url(#spineShade)"/>
+      <rect x="${x+2}" y="${y+7}" width="${w-4}" height="1.6" fill="url(#goldGrad)"/><rect x="${x+2}" y="${y+10}" width="${w-4}" height=".8" fill="url(#goldGrad)"/>
+      <rect x="${x+2}" y="${y+h-11}" width="${w-4}" height="1.6" fill="url(#goldGrad)"/>
+      ${R()<.6?`<rect x="${x+w/2-2}" y="${y+h*.32}" width="4" height="${Math.round(h*.3)}" rx="1" fill="url(#goldGrad)" opacity=".85"/>`:''}</g>`;
+    x+=w+(lean?8:1);
+    if(R()<.06) x+=10;
+  }
+  return `<defs><linearGradient id="spineShade" x1="0" x2="1"><stop offset="0" stop-color="#000" stop-opacity=".45"/><stop offset=".35" stop-color="#fff" stop-opacity=".12"/><stop offset=".6" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".4"/></linearGradient></defs>
+  <g filter="url(#leatherF)">${books}</g><g filter="url(#aged)">${bands}</g>
+  <g transform="translate(600 46)" filter="url(#wc)">${hydCluster(20,20,22,26,['#b6a4ec','#e8a3bc','#8db7de'],5)}</g>
+  <rect x="0" y="100" width="700" height="14" fill="#6b4422" filter="url(#wood)"/>
+  <rect x="0" y="100" width="700" height="2" fill="#c9a24c" opacity=".35"/>
+  <rect x="0" y="114" width="700" height="6" fill="#000" opacity=".35"/>`;
+})();
+
+/* illuminated drop cap */
+function dropCap(ch){
+  return `<svg class="dropcap" viewBox="0 0 66 66" aria-hidden="true">
+    <rect x="2" y="2" width="62" height="62" fill="#5a1a26" filter="url(#leatherF)"/>
+    <g filter="url(#aged)" fill="none" stroke="url(#goldGrad)">
+      <rect x="2" y="2" width="62" height="62" stroke-width="2.4"/><rect x="6" y="6" width="54" height="54" stroke-width=".8"/>
+      <path d="M8 58 C 16 50, 12 42, 20 38 C 26 35, 26 44, 21 44 M58 8 C 50 16, 42 12, 38 20 C 35 26, 44 26, 44 21" stroke-width="1.2"/>
+    </g>
+    <circle cx="10" cy="10" r="2" fill="#e8a3bc"/><circle cx="56" cy="56" r="2" fill="#ab9ce3"/>
+    <text x="33" y="49" text-anchor="middle" font-family="Cormorant Garamond, serif" font-style="italic" font-weight="600" font-size="46" fill="url(#goldGrad)" filter="url(#foil)">${esc(ch)}</text></svg>`;
+}
+
+/* gold filigree corners */
+const FILI=`<g filter="url(#aged)" fill="none" stroke="url(#goldGrad)" stroke-linecap="round">
+  <path d="M3 36 L3 3 L36 3" stroke-width="2"/>
+  <path d="M8 30 L8 8 L30 8" stroke-width=".9"/>
+  <path d="M8 8 C 16 9, 20 14, 18 20 C 16 25, 10 23, 11 18 C 12 15, 15 15, 15.5 17.5" stroke-width="1.3"/>
+  <circle cx="3" cy="3" r="2.2" fill="url(#goldGrad)" stroke="none"/></g>`;
+document.querySelectorAll('.card.ornate').forEach(c=>c.insertAdjacentHTML('afterbegin',
+  `<svg class="fili l" viewBox="0 0 40 40" aria-hidden="true">${FILI}</svg><svg class="fili r" viewBox="0 0 40 40" aria-hidden="true">${FILI}</svg>`));
+
+/* dust motes drifting in candlelight */
+(function(){ const R=rng(303); let m='';
+  for(let i=0;i<18;i++) m+=`<circle cx="${(R()*100).toFixed(1)}%" cy="${(R()*100).toFixed(1)}%" r="${(.7+R()*1.8).toFixed(1)}" fill="#f6e3b0" filter="url(#glow)" style="--d:${(14+R()*16).toFixed(0)}s;--dx:${(R()*60-30).toFixed(0)}px;--dy:${(-30-R()*60).toFixed(0)}px;animation-delay:-${(R()*20).toFixed(0)}s"/>`;
+  document.getElementById('motes').innerHTML=m; })();
+
+/* ex libris bookplate */
+document.getElementById('exlibris').innerHTML=`<g filter="url(#aged)">
+  <ellipse cx="115" cy="37" rx="108" ry="32" fill="none" stroke="url(#goldGrad)" stroke-width="1.8"/>
+  <ellipse cx="115" cy="37" rx="101" ry="26" fill="none" stroke="url(#goldGrad)" stroke-width=".7"/>
+  <path d="M28 37 h16 M186 37 h16" stroke="url(#goldGrad)" stroke-width="1"/>
+  <circle cx="24" cy="37" r="2" fill="url(#goldGrad)"/><circle cx="206" cy="37" r="2" fill="url(#goldGrad)"/></g>
+  <text x="115" y="30" text-anchor="middle" font-family="IM Fell English SC, serif" font-size="11" letter-spacing="4" fill="url(#goldGrad)" filter="url(#foil)">EX LIBRIS</text>
+  <text x="115" y="54" text-anchor="middle" font-family="Cormorant Garamond, serif" font-style="italic" font-weight="600" font-size="24" fill="url(#goldGrad)" filter="url(#foil)">Jenni</text>`;
+
+function sealInner(letter){
+  return `<circle cx="40" cy="40" r="30" fill="url(#waxGrad)" filter="url(#wax)"/>
+    <circle cx="40" cy="40" r="20" fill="none" stroke="#9c3d62" stroke-width="1.5" opacity=".7" filter="url(#deboss)"/>
+    <text x="40" y="49" text-anchor="middle" font-family="Cormorant Garamond, serif" font-style="italic" font-weight="600" font-size="28" fill="#a8476e" filter="url(#deboss)">${letter}</text>`;
+}
+function sealSVG(letter, size){
+  return `<svg viewBox="0 0 80 80" width="${size}" height="${size}" aria-hidden="true">
+    <circle cx="40" cy="40" r="30" fill="url(#waxGrad)" filter="url(#wax)"/>
+    <circle cx="40" cy="40" r="20" fill="none" stroke="#9c3d62" stroke-width="1.5" opacity=".7" filter="url(#deboss)"/>
+    <text x="40" y="49" text-anchor="middle" font-family="Cormorant Garamond, serif" font-style="italic" font-weight="600" font-size="28" fill="#a8476e" filter="url(#deboss)">${letter}</text></svg>`;
+}
+function footSeal(rings){
+  let g='';
+  for(let i=Math.min(rings,7)-1;i>=0;i--) g+=`<circle cx="70" cy="70" r="${38+i*4.4}" fill="none" stroke="url(#goldGrad)" stroke-width="2.6" filter="url(#ringF)"/>`;
+  document.getElementById('footSeal').innerHTML = g + `<g transform="translate(30 30)">${sealInner('J')}</g>`;
+}
+
+/* ---------- data ---------- */
+const CATALOG=[
+  {title:"Mexican Gothic", author:"Silvia Moreno-Garcia", reason:"It has a decaying mansion, a heroine who asks too many questions, and a horror that grows through the walls. It is Frankenstein-level dread with Mexican roots."},
+  {title:"The Secret History", author:"Donna Tartt", reason:"It is the book that started dark academia: classics students, a terrible secret, and the guilt that follows. Victor Frankenstein would recognise the hubris."},
+  {title:"Never Let Me Go", author:"Kazuo Ishiguro", reason:"It asks the same question as Frankenstein's creature, about who gets to count as human, but quietly, and it will break your heart."},
+  {title:"Before the Coffee Gets Cold", author:"Toshikazu Kawaguchi", reason:"A small Tokyo café lets you travel back in time if you follow its rules. It is short, warm and very Japanese, a good palate cleanser after something gothic."},
+  {title:"Dracula", author:"Bram Stoker", reason:"It is Frankenstein's gothic sibling, told entirely in letters and diary entries, so it reads like someone else's reading journal."},
+  {title:"The Picture of Dorian Gray", author:"Oscar Wilde", reason:"It is another creation that turns on its maker, written with some of the sharpest lines in English."},
+  {title:"Klara and the Sun", author:"Kazuo Ishiguro", reason:"It is narrated by a made being who loves the family she serves. It is gentler than Frankenstein but asks what a created mind deserves."},
+  {title:"Rebecca", author:"Daphne du Maurier", reason:"It has a moody English estate, a first wife who is everywhere though she is dead, and one of the best opening lines in gothic fiction."},
+  {title:"Kokoro", author:"Natsume Sōseki", reason:"It is a Japanese classic about loneliness and a mentor's secret, ending in a long confessional letter."},
+  {title:"If We Were Villains", author:"M. L. Rio", reason:"Shakespeare students, a death, and theatre kids at their most dramatic. It is pure dark academia for a film club girl."},
+  {title:"Jane Eyre", author:"Charlotte Brontë", reason:"It is gothic, romantic and fierce, and Thornfield Hall keeps its own secret in the attic."},
+  {title:"Babel", author:"R. F. Kuang", reason:"It mixes Oxford, the magic of translation and the cost of empire. It has the library aesthetic with real bite."}
+];
+const SPINES=['#6e1f2a','#26392d','#2b3550','#4b2a45','#5a3b1e','#3a2a4d'];
+function hash(s){ let h=0; for(const ch of s) h=(h*31+ch.charCodeAt(0))|0; return Math.abs(h); }
+const norm = s => String(s||'').trim().toLowerCase();
+const esc = s => String(s==null?'':s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function clean(o){ // shared data is untrusted: coerce every field
+  return { id:o.id, title:String(o.title||'Untitled').slice(0,120), author:String(o.author||'').slice(0,80),
+    rating:Math.max(0,Math.min(5,Math.round(Number(o.rating)||0))), thought:String(o.thought||'').slice(0,200),
+    note:o.note?String(o.note).slice(0,300):'', why:String(o.why||'').slice(0,600), got:!!o.got,
+    createdAt:Number(o.createdAt)||0 };
+}
+
+const state={ books:[], wish:[], recs:null, mode:'loading', readOnly:false, rating:0, finding:false };
+let db=null, sample=null;
+
+/* local fallback (preview / signed out) */
+const LS='reading-room-v1';
+function lsLoad(){ try{ const v=JSON.parse(localStorage.getItem(LS)); if(v) return v; }catch(e){} return null; }
+function lsSave(){ try{ localStorage.setItem(LS, JSON.stringify({books:state.books, wish:state.wish, recs:state.recs})); }catch(e){} }
+function startLocal(){
+  state.mode='local';
+  const v=lsLoad();
+  if(v){ state.books=(v.books||[]).map(clean); state.wish=(v.wish||[]).map(clean); state.recs=v.recs||null; }
+  render();
+}
+
+/* ---------- store ---------- */
+function newId(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,8); }
+async function write(fn){
+  try{ await fn(); return true; }
+  catch(e){
+    if(e && e.code==='invalid_argument'){ state.readOnly=true; showBanner("You can look around, but this shelf can't save your changes yet. Ask Sanjay to share it with you as a Contributor."); }
+    else if(e && e.code==='quota_exceeded'){ toast("The shelf is full. Remove a few old entries and try again."); }
+    else { toast("That didn't save. Check your connection and try again."); }
+    return false;
+  }
+}
+const store={
+  async addBook(b){ if(state.mode==='db') return write(()=>db.collection('books').doc(b.id).set(b)); state.books.unshift(clean(b)); lsSave(); render(); return true; },
+  async removeBook(id){ if(state.mode==='db') return write(()=>db.collection('books').doc(id).delete()); state.books=state.books.filter(b=>b.id!==id); lsSave(); render(); return true; },
+  async addWish(w){ if(state.mode==='db') return write(()=>db.collection('wishlist').doc(w.id).set(w)); state.wish.unshift(clean(w)); lsSave(); render(); return true; },
+  async setGot(id,got){ if(state.mode==='db') return write(()=>db.collection('wishlist').doc(id).update({got})); const w=state.wish.find(x=>x.id===id); if(w) w.got=got; lsSave(); render(); return true; },
+  async removeWish(id){ if(state.mode==='db') return write(()=>db.collection('wishlist').doc(id).delete()); state.wish=state.wish.filter(x=>x.id!==id); lsSave(); render(); return true; },
+  async saveRecs(r){ if(state.mode==='db') return write(()=>db.doc('recs/latest').set(r)); lsSave(); return true; }
+};
+
+/* ---------- recommendations ---------- */
+function topBook(){ return [...state.books].sort((a,b)=>b.rating-a.rating||b.createdAt-a.createdAt)[0]; }
+function fallbackRecs(){
+  const taken=new Set([...state.books,...state.wish].map(b=>norm(b.title)));
+  const pool=CATALOG.filter(c=>!taken.has(norm(c.title)));
+  const start=state.books.length % Math.max(1,pool.length);
+  const picks=[...pool.slice(start),...pool.slice(0,start)].slice(0,3);
+  const t=topBook();
+  return picks.map(p=>({title:p.title, author:p.author,
+    why:(t && t.rating ? `You gave ${t.title} ${t.rating} hydrangea${t.rating===1?'':'s'}. ` : '') + p.reason}));
+}
+async function findRecs(auto){
+  if(state.finding) return;
+  const err=document.getElementById('recErr'); err.textContent='';
+  if(!sample){ state.recs={items:fallbackRecs(), at:Date.now(), source:'archive'}; await store.saveRecs(state.recs); render(); return; }
+  state.finding=true; render();
+  const shelf=state.books.slice(0,40).map(b=>`- "${b.title}"${b.author?' by '+b.author:''}: ${b.rating}/5 hydrangeas${b.thought?`. Her note: "${b.thought}"`:''}`).join('\n') || '(nothing logged yet)';
+  const skip=[...state.books,...state.wish].map(b=>b.title).join('; ');
+  const prompt=`You recommend books to Jenni, who keeps a reading log. She loves a dark academia aesthetic, gothic fiction, Japanese culture and literature, and films (she is in a film club). Ratings are out of 5 "hydrangeas".
+
+Her shelf:
+${shelf}
+
+Do not recommend any of these titles: ${skip||'(none)'}.
+
+Recommend exactly 3 real, published books she would likely love next. For each, write "why": 1 or 2 warm, specific sentences addressed to her as "you", naming at least one book from her shelf and what she rated or said about it. No spoilers. Plain sentences, no em dashes.
+
+Reply with only JSON: {"items":[{"title":"...","author":"...","why":"..."}]}`;
+  try{
+    const out=await sample.json(prompt,{modelTier:'default'});
+    const arr=(out && Array.isArray(out.items)) ? out.items : (Array.isArray(out)?out:[]);
+    const items=arr.filter(x=>x && typeof x.title==='string').slice(0,3).map(x=>({title:String(x.title).slice(0,120), author:String(x.author||'').slice(0,80), why:String(x.why||'').slice(0,600)}));
+    if(!items.length) throw {code:'empty'};
+    state.recs={items, at:Date.now(), source:'claude'};
+    await store.saveRecs(state.recs);
+  }catch(e){
+    if(e && e.code==='not_granted'){ sample=null; state.recs={items:fallbackRecs(), at:Date.now(), source:'archive'}; }
+    else if(e && e.code==='rate_limited'){ err.textContent="Too many requests just now. Try again in a minute."; }
+    else { err.textContent="Couldn't reach the stacks. Showing picks from the archive instead."; state.recs={items:fallbackRecs(), at:Date.now(), source:'archive'}; }
+  }finally{ state.finding=false; render(); }
+}
+
+/* ---------- rendering ---------- */
+const $=id=>document.getElementById(id);
+function view(){ const h=(location.hash||'').slice(1); return ['today','shelf','next','kinokuniya','photos'].includes(h)?h:'today'; }
+function fmtDate(t){ if(!t) return ''; try{ return new Date(t).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'}); }catch(e){ return ''; } }
+
+function renderRateInput(){
+  const box=$('rateInput'); let h='';
+  for(let i=1;i<=5;i++) h+=`<button type="button" role="radio" aria-checked="${state.rating===i}" aria-label="${i} hydrangea${i>1?'s':''}" data-r="${i}">${hydIcon(i<=state.rating)}</button>`;
+  h+=`<span class="rl">${state.rating? state.rating+' of 5':'Tap to rate'}</span>`;
+  box.innerHTML=h;
+}
+function miniRate(n){ let h='<span class="minirate" aria-label="'+n+' of 5 hydrangeas">'; for(let i=1;i<=5;i++) h+=hydIcon(i<=n); return h+'</span>'; }
+
+function render(){
+  const v=view();
+  document.querySelectorAll('nav.tabs a').forEach(a=>{ if(a.dataset.view===v) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current'); });
+  document.querySelectorAll('[data-v]').forEach(s=>s.hidden = s.dataset.v!==v);
+  renderToday();
+  renderBadges();
+  $('nShelf').textContent = state.books.length?`· ${state.books.length}`:'';
+  const open=state.wish.filter(w=>!w.got).length; $('nWish').textContent = open?`· ${open}`:'';
+  $('logBtn').disabled = state.readOnly;
+
+  // stats
+  const n=state.books.length, rated=state.books.filter(b=>b.rating), avg=rated.length?(rated.reduce((s,b)=>s+b.rating,0)/rated.length):0;
+  const now=new Date(), month=state.books.filter(b=>{const d=new Date(b.createdAt); return d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear();}).length;
+  $('stats').innerHTML=`<div class="stat"><b>${n}</b><span>Books</span></div><div class="stat"><b>${avg?avg.toFixed(1):'–'}</b><span>Avg rating</span></div><div class="stat"><b>${month}</b><span>This month</span></div>`;
+
+  // shelf
+  $('shelfMeta').textContent = state.mode==='loading' ? 'Opening the shelf…' : (n? 'Newest first':'');
+  if(state.mode==='loading'){ $('shelfList').innerHTML=''; }
+  else if(!n){ $('shelfList').innerHTML=`<div class="card empty"><h2>An empty shelf</h2><p>Log your first book above and it will appear here.</p></div>`; }
+  else $('shelfList').innerHTML=state.books.map(b=>`
+    <article class="card book">
+      <div class="spine" style="--sp:${SPINES[hash(b.title)%SPINES.length]}" aria-hidden="true"></div>
+      <div>
+        <h4>${esc(b.title)}</h4>
+        ${b.author?`<div class="by">${esc(b.author)}</div>`:''}
+        <div class="rate-row">${miniRate(b.rating)}<span class="when">${b.createdAt?'Shelved '+esc(fmtDate(b.createdAt)):''}</span></div>
+        ${b.thought?`<blockquote>${esc(b.thought)}</blockquote>`:''}
+        ${b.note?`<div class="note">${sealSVG('S',46)}<div><div class="from">A note from Sanjay</div><p>${esc(b.note)}</p></div></div>`:''}
+        ${state.readOnly?'':`<div class="tools"><button class="linkbtn" type="button" data-del="${esc(b.id)}">Remove</button></div>`}
+      </div>
+    </article>`).join('');
+
+  // recs
+  $('findBtn').disabled = state.finding;
+  $('findBtn').textContent = state.recs ? 'Find new picks' : 'Find my next read';
+  $('recFinding').hidden = !state.finding;
+  const recs = state.recs && Array.isArray(state.recs.items) && state.recs.items.length ? state.recs : {items:fallbackRecs(), source:'archive'};
+  $('recSource').textContent = recs.source==='claude' ? `Picked for you ${recs.at?fmtDate(recs.at):''}` : 'From the archive';
+  const onList=new Set(state.wish.map(w=>norm(w.title)));
+  $('recList').innerHTML = state.finding ? '' : recs.items.map((r,i)=>`
+    <article class="card rec">
+      <svg class="pressed hyd-on" viewBox="0 0 26 26" aria-hidden="true" style="transform:rotate(${[14,-18,32][i%3]}deg)"><use href="#hyd" filter="url(#pressed)"/></svg>
+      <h4>${esc(r.title)}</h4>
+      ${r.author?`<div class="by">${esc(r.author)}</div>`:''}
+      <div class="why"><b>Why this one</b>${esc(r.why)}</div>
+      ${onList.has(norm(r.title)) ? `<span class="source" style="color:var(--pink-deep)">On your Kinokuniya list</span>`
+        : (state.readOnly?'':`<button class="btn ghost" type="button" data-wish="${i}">Add to Kinokuniya list</button>`)}
+    </article>`).join('');
+  $('recList').dataset.items = JSON.stringify(recs.items);
+
+  // wishlist
+  const got=state.wish.filter(w=>w.got).length;
+  $('wishSummary').textContent = state.wish.length ? `${state.wish.length-got} to find, ${got} found.` : '';
+  $('wishList').innerHTML = !state.wish.length
+    ? `<div class="card empty"><h2>Nothing here yet</h2><p>Add a book from Read next and it will wait here for the bookstore.</p></div>`
+    : state.wish.map(w=>`
+    <article class="card wish ${w.got?'got':''}">
+      <input class="check" type="checkbox" id="w-${esc(w.id)}" data-got="${esc(w.id)}" ${w.got?'checked':''} ${state.readOnly?'disabled':''} aria-label="Found ${esc(w.title)}">
+      <div>
+        <h4>${esc(w.title)}</h4>
+        ${w.author?`<div class="by">${esc(w.author)}</div>`:''}
+        ${w.why?`<p>${esc(w.why)}</p>`:''}
+        ${w.got?'<span class="gotlbl">Found it</span> ':''}
+        ${state.readOnly?'':`<button class="linkbtn" type="button" data-unwish="${esc(w.id)}">Remove</button>`}
+      </div>
+    </article>`).join('');
+}
+
+/* ---------- today ---------- */
+const AFFIRM=[
+"You are the kind of smart that makes hard things look easy. Today, let it be easy on you too.",
+"Hydrangeas change color with the soil they grow in. You make every place you're planted more beautiful.",
+"Your spreadsheets are cleaner than most people's lives. Trust the way your mind organizes things.",
+"Morning crew: the sun shows up for you because you show up for it.",
+"Ciel means sky. You carry a lot of it with you: open, bright, and bigger than you think.",
+"Hard work looks good on you. So does rest. Take some of both today.",
+"Lily of the valley means a return to happiness. Here's to yours, today and every day.",
+"You are funny in a way that sneaks up on people. Someone will be smiling today about something you said.",
+"The numbers always balance in the end. So will this week.",
+"Every book on your shelf made you a little more you. Read something good today.",
+"You don't need to be finished to be wonderful. Works in progress are the best part of any story.",
+"Pink never asks permission to be noticed. Neither should you.",
+"Somewhere in Kinokuniya there's a book waiting for you. Good things are always waiting for you.",
+"Your taste in music is impeccable. Put on the right song and let today follow it.",
+"Even Spider-Man has bad days. He still swings. So do you.",
+"Mint is cool, sharp, and refreshing. That is also a fair description of you.",
+"You are the main character, and this is one of the good chapters.",
+"Accounting is keeping track of what matters. Today, count the good things too.",
+"Frankenstein's creature only wanted to be understood. You are understood, and you are adored.",
+"Like a good formula, you make everything around you work better.",
+"Be as kind to yourself as you are to the people you love.",
+"Like a film club pick, you get better every time someone looks closer.",
+"Cacahuananche blooms on bare branches before the leaves come back. You bloom in hard seasons too.",
+"You are allowed to take up space, ask questions, and order the extra boba.",
+"You don't have to earn rest. Close the laptop when you need to.",
+"The way you light up talking about things you love is one of the best things about you.",
+"Bubble Yum confidence: blow the big bubble. If it pops, laugh and blow another.",
+"Ice ice baby. Stay cool today. You've got this.",
+"Your future self is going to be so grateful for what you're doing right now.",
+"Dark academia rule: candles lit, coffee made, worries closed like a finished book.",
+"Today is a good day to be proud of yourself. Not for anything in particular. Just because."
+];
+const ORDER=(function(){ const R=rng(827), a=AFFIRM.map((_,i)=>i); for(let i=a.length-1;i>0;i--){ const j=Math.floor(R()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; })();
+function dayNumber(){ const d=new Date(); return Math.floor(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())/86400000); }
+let affirmOffset=0, flowerDay=-1;
+function renderToday(){
+  const day=dayNumber();
+  const d=new Date();
+  $('todayDate').textContent=d.toLocaleDateString(undefined,{weekday:'long', month:'long', day:'numeric'});
+  const line=AFFIRM[ORDER[(day+affirmOffset)%ORDER.length]];
+  const af=$('affirm'); af.classList.add('has-cap'); af.setAttribute('aria-label', line);
+  af.innerHTML=dropCap(line[0])+`<span aria-hidden="true">${esc(line.slice(1))}</span>`;
+  if(flowerDay!==day){ flowerDay=day;
+    $('todayFlower').innerHTML = day%2 ? cacaBranch(170,110,day%97)
+      : `<g filter="url(#wc)">${leaf(70,104,44,14,-40,'#3f5e3c')+leaf(96,104,40,13,34,'#4d6e45')}${hydCluster(86,52,40,46,['#b6a4ec','#9d8be0','#e8a3bc','#8db7de','#c9b8f2'],day%89)}</g>`;
+  }
+  const lines=state.books.filter(b=>b.thought);
+  const fs=$('fromShelf');
+  if(!lines.length){ fs.hidden=true; }
+  else { const b=lines[day%lines.length]; fs.hidden=false;
+    fs.innerHTML=`<div class="from">A line you wrote</div><blockquote>${esc(b.thought)}</blockquote><div class="src">on ${esc(b.title)}${b.rating?`, ${b.rating} hydrangea${b.rating>1?'s':''}`:''}</div>`; }
+}
+$('moreAffirm').addEventListener('click',()=>{ affirmOffset++; renderToday(); });
+
+/* buzz ball: a round, unlabeled cocktail can */
+$('buzzArt').innerHTML=`<defs>
+  <radialGradient id="ballG" cx=".35" cy=".35" r=".75"><stop offset="0" stop-color="#ffd3e6"/><stop offset=".45" stop-color="#e46fa6"/><stop offset="1" stop-color="#6b1f4f"/></radialGradient>
+  <linearGradient id="lidG" x1="0" x2="1"><stop offset="0" stop-color="#9a9aa6"/><stop offset=".5" stop-color="#f2f2f6"/><stop offset="1" stop-color="#7c7c88"/></linearGradient></defs>
+  <ellipse cx="42" cy="90" rx="26" ry="4" fill="#000" opacity=".35"/>
+  <circle cx="42" cy="56" r="32" fill="url(#ballG)" filter="url(#wax)"/>
+  <path d="M14 58 C 26 66, 58 66, 70 58" stroke="#fff" stroke-opacity=".35" stroke-width="3" fill="none"/>
+  <path d="M12 50 C 26 58, 58 58, 72 50" stroke="#3a0f2a" stroke-opacity=".3" stroke-width="2" fill="none"/>
+  <rect x="31" y="20" width="22" height="7" rx="2" fill="url(#lidG)"/>
+  <ellipse cx="42" cy="20" rx="11" ry="3" fill="url(#lidG)" filter="url(#aged)"/>
+  <path d="M38 17 q 4 -6 9 -1" stroke="#c9c9d2" stroke-width="2" fill="none"/>
+  <ellipse cx="30" cy="42" rx="7" ry="4" fill="#fff" opacity=".45" transform="rotate(-30 30 42)"/>`;
+$('buzzBtn').addEventListener('click',()=>{
+  const b=$('bubble'), z=$('buzz');
+  b.hidden=false; b.textContent="Dude Carlos, get your fatass over here, foo. Buzz Ball, foo.";
+  z.classList.remove('shake'); void z.offsetWidth; z.classList.add('shake');
+});
+
+/* ---------- gold rings ---------- */
+const RING_NAMES={5:'Bookworm',10:'Night Owl',15:'Dark Academic',20:'Archivist',25:'Librarian',30:'Curator',40:'Keeper of the Stacks',50:'Ex Libris Legend'};
+const ringName=n=>RING_NAMES[n]||`${n} books`;
+function badgeSVG(n, earned){
+  let leaves='';
+  for(let side of [-1,1]) for(let k=0;k<7;k++){
+    const a=(side<0? 200+k*18 : -20-k*18)*Math.PI/180, r=41;
+    const x=50+Math.cos(a)*r, y=54+Math.sin(a)*r*.98, rot=a*180/Math.PI+(side<0?90:-90)+side*35;
+    leaves+=`<ellipse cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" rx="3.4" ry="7.5" transform="rotate(${rot.toFixed(0)} ${x.toFixed(1)} ${y.toFixed(1)})"/>`;
+  }
+  if(!earned) return `<svg viewBox="0 0 100 100" aria-hidden="true"><g fill="none" stroke="#a8916b" stroke-width="1.6" stroke-dasharray="3 4" opacity=".55"><circle cx="50" cy="50" r="30"/></g>
+    <text x="50" y="58" text-anchor="middle" font-family="Cormorant Garamond, serif" font-style="italic" font-weight="600" font-size="24" fill="#a8916b" opacity=".7">${n}</text></svg>`;
+  return `<svg viewBox="0 0 100 100" aria-hidden="true">
+    <g fill="url(#goldGrad)" filter="url(#aged)">${leaves}</g>
+    <circle cx="50" cy="50" r="30" fill="none" stroke="url(#ringGrad)" stroke-width="9" filter="url(#ringF)"/>
+    <circle cx="50" cy="50" r="24" fill="#24180f" opacity=".85"/>
+    <text x="50" y="59" text-anchor="middle" font-family="Cormorant Garamond, serif" font-style="italic" font-weight="600" font-size="26" fill="url(#goldGrad)" filter="url(#foil)">${n}</text></svg>`;
+}
+function renderBadges(){
+  const n=state.books.length, earned=Math.floor(n/5), left=5-(n%5);
+  let h='';
+  for(let i=1;i<=earned;i++) h+=`<div class="badge">${badgeSVG(i*5,true)}<b>${esc(ringName(i*5))}</b><span>${i*5} books</span></div>`;
+  const next=(earned+1)*5;
+  h+=`<div class="badge ghost">${badgeSVG(next,false)}<b>${esc(ringName(next))}</b><span>${left} to go</span></div>`;
+  if(!earned) h+=`<div class="badge-note">Every five books earns a gold ring. Shelve ${left} more for the first one.<div class="pips">${Array.from({length:5},(_,i)=>`<i class="${i<n%5?'on':''}"></i>`).join('')}</div></div>`;
+  $('badges').innerHTML=h;
+  $('badgeMeta').textContent = earned ? `${earned} earned` : '';
+  footSeal(earned);
+}
+
+/* ---------- scrapbook ---------- */
+const PHOTOS=[
+ {f:'01',w:750,h:1000,cap:'Harufilm, matcha edition'},
+ {f:'02',w:1000,h:750,cap:'Our strip, riding shotgun'},
+ {f:'03',w:750,h:1000,cap:'The moon came too'},
+ {f:'04',w:750,h:1000,cap:'TESO mirror, take one'},
+ {f:'05',w:750,h:1000,cap:'Take two'},
+ {f:'06',w:1000,h:750,cap:'Kanpeki, cheek attack'},
+ {f:'07',w:1000,h:750,cap:'Kanpeki, payback'},
+ {f:'08',w:1000,h:750,cap:'Tongue out, as usual'},
+ {f:'09',w:1000,h:562,cap:'Under the Tonkatsu sign'},
+ {f:'10',w:750,h:1000,cap:'Karaage and the cabbage mountain'},
+ {f:'11',w:750,h:1000,cap:'She found the strawberry glass'},
+ {f:'12',w:750,h:1000,cap:'Seriously considering it'},
+ {f:'13',w:750,h:1000,cap:'Kinokuniya finds'},
+ {f:'14',w:750,h:1000,cap:'The mochi donut lineup'},
+ {f:'15',w:750,h:1000,cap:'Bakery run'},
+ {f:'16',w:750,h:1000,cap:'Choosing is hard'},
+ {f:'17',w:750,h:1000,cap:'Caught mid-sentence'},
+ {f:'18',w:750,h:1000,cap:'Fall cookies'},
+ {f:'19',w:750,h:1000,cap:'Milk baguette and more mochi'},
+ {f:'20',w:750,h:1000,cap:'Bread we did not need'},
+ {f:'21',w:1000,h:1000,cap:'Purple lights',nd:1},
+ {f:'22',w:750,h:1000,cap:'Hydrangeas and the gift basket',nd:1},
+ {f:'23',w:750,h:1000,cap:'Laufey hoodie',nd:1},
+ {f:'24',w:1000,h:750,cap:'Kitchen selfie',nd:1},
+ {f:'25',w:750,h:1000,cap:'Harufilm, page two',nd:1},
+ {f:'26',w:750,h:1000,cap:'Down by the lake',nd:1},
+ {f:'27',w:1000,h:751,cap:'The whole crew on the dock',nd:1},
+ {f:'28',w:750,h:1000,cap:'Wrapped up on the dock',nd:1},
+ {f:'29',w:750,h:1000,cap:'Castle window',nd:1},
+ {f:'30',w:752,h:1000,cap:'Golden hour',nd:1},
+ {f:'31',w:750,h:1000,cap:'Sketchbook portraits',nd:1},
+ {f:'32',w:750,h:1000,cap:'Motion blur',nd:1},
+ {f:'33',w:750,h:1000,cap:'Plaid hat and sunglasses',nd:1}
+];
+const TAPES=['#f2a9c4','#a9c8ea','#bfe3c8','#c9b8f2','#f6d58e'];
+document.getElementById('grainImg').setAttribute('href','data:image/svg+xml,'+encodeURIComponent(grain));
+function photoSVG(p, src, idx, cls){
+  const W=1000, H=Math.round(1000*p.h/p.w), R=rng(400+idx);
+  const lx=R()<.5?R()*200:W-R()*200, ly=R()*H*.6;
+  const leaks=`<g style="mix-blend-mode:screen" filter="url(#leak)" opacity=".55">
+    <ellipse cx="${lx.toFixed(0)}" cy="${ly.toFixed(0)}" rx="${(160+R()*120).toFixed(0)}" ry="${(120+R()*120).toFixed(0)}" fill="${R()<.5?'#ff8a3d':'#ff5f8a'}"/>
+    <ellipse cx="${(lx+(R()-.5)*300).toFixed(0)}" cy="${(ly+120).toFixed(0)}" rx="90" ry="70" fill="#ffd27a"/></g>`;
+  let scratches=''; for(let k=0;k<3;k++){ const x=R()*W; scratches+=`<line x1="${x.toFixed(0)}" y1="0" x2="${(x+(R()-.5)*30).toFixed(0)}" y2="${H}" stroke="#fff" stroke-width="${(.6+R()).toFixed(1)}" opacity=".08"/>`; }
+  let dust=''; for(let k=0;k<10;k++) dust+=`<circle cx="${(R()*W).toFixed(0)}" cy="${(R()*H).toFixed(0)}" r="${(1+R()*2.5).toFixed(1)}" fill="#fff" opacity="${(.08+R()*.15).toFixed(2)}"/>`;
+  return `<svg class="${cls}" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="${esc(p.cap)}">
+    <image ${src?`href="${src}"`:`data-src="photos/p${p.f}.jpg"`} width="${W}" height="${H}" preserveAspectRatio="xMidYMid slice" filter="url(#film)"/>
+    <rect width="${W}" height="${H}" fill="url(#grainPat)" style="mix-blend-mode:overlay" opacity=".55"/>
+    ${leaks}${scratches}${dust}
+    <rect width="${W}" height="${H}" fill="url(#vig)"/>
+    ${p.nd?'':`<text x="${W-36}" y="${H-34}" text-anchor="end" font-family="ui-monospace, Menlo, monospace" font-size="${Math.round(W*.042)}" font-weight="700" fill="#ff9a3c" filter="url(#stamp)" letter-spacing="3" opacity=".9">'26 11 14</text>`}
+  </svg>`;
+}
+function tapeSVG(color, idx){
+  return `<svg class="tape" viewBox="0 0 120 32" style="--tt:${[-4,3,-2,5,-6][idx%5]}deg" aria-hidden="true">
+    <defs><pattern id="tp${idx}" width="8" height="8" patternUnits="userSpaceOnUse"><circle cx="4" cy="4" r="1.2" fill="#fff" opacity=".55"/></pattern></defs>
+    <g filter="url(#tape)"><rect x="2" y="3" width="116" height="26" fill="${color}" opacity=".78"/><rect x="2" y="3" width="116" height="26" fill="url(#tp${idx})"/></g></svg>`;
+}
+const CORNER=`<g filter="url(#aged)"><path d="M0 0 H30 L0 30 Z" fill="url(#goldGrad)"/><path d="M4 4 H22 L4 22 Z" fill="none" stroke="#6b4a18" stroke-width=".8" opacity=".6"/></g>`;
+function buildScrapbook(){
+  const strip=$('filmstrip'), scrap=$('scrap');
+  strip.innerHTML=PHOTOS.map((p,i)=>`<button type="button" role="listitem" data-jump="${i}" aria-label="Photo ${i+1}: ${esc(p.cap)}">
+    <svg viewBox="0 0 78 104" aria-hidden="true"><image href="photos/t${p.f}.jpg" width="78" height="104" preserveAspectRatio="xMidYMid slice" filter="url(#film)"/><rect width="78" height="104" fill="url(#vig)"/></svg>
+    <span>${String(i+1).padStart(2,'0')}A</span></button>`).join('');
+  let h='';
+  PHOTOS.forEach((p,i)=>{
+    const tilt=[-2.6,1.8,-1.2,2.4,-1.9,1.1][i%6], wide=p.w>p.h;
+    const deco = i%3===1 ? `<svg class="corner tl" viewBox="0 0 30 30">${CORNER}</svg><svg class="corner tr" viewBox="0 0 30 30">${CORNER}</svg><svg class="corner bl" viewBox="0 0 30 30">${CORNER}</svg><svg class="corner br" viewBox="0 0 30 30">${CORNER}</svg>`
+      : tapeSVG(TAPES[i%TAPES.length], i);
+    h+=`<figure class="pol ${wide?'wide':''}" id="ph-${i}" style="--tilt:${tilt}deg" tabindex="0" data-open="${i}">
+      ${photoSVG(p,null,i,'ph')}${deco}</figure>`;
+    if(i%4===3 && i<PHOTOS.length-1) h+= i%8===3
+      ? `<svg class="pressed-sprig" viewBox="0 0 170 110" aria-hidden="true"><g filter="url(#pressed)">${cacaBranch(170,110,600+i)}</g></svg>`
+      : `<svg class="pressed-sprig" viewBox="0 0 170 110" aria-hidden="true"><g filter="url(#pressed)"><g filter="url(#wc)">${leaf(70,100,40,13,-40,'#4f6d48')+leaf(98,100,36,12,36,'#5a7a50')}${hydCluster(85,52,36,40,['#b6a4ec','#e8a3bc','#8db7de','#c9b8f2'],700+i)}</g></g></svg>`;
+  });
+  scrap.innerHTML=h;
+  const load=img=>{ if(img.dataset.src){ img.setAttribute('href',img.dataset.src); delete img.dataset.src; } };
+  if('IntersectionObserver' in window){
+    const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ load(e.target.querySelector('image')); io.unobserve(e.target);} }),{rootMargin:'900px 0px'});
+    scrap.querySelectorAll('.pol').forEach(f=>io.observe(f));
+  } else scrap.querySelectorAll('image').forEach(load);
+}
+buildScrapbook();
+let lbIdx=0;
+function openLB(i){ lbIdx=(i+PHOTOS.length)%PHOTOS.length; const p=PHOTOS[lbIdx];
+  $('lbSvg').outerHTML=photoSVG(p,`photos/p${p.f}.jpg`,lbIdx,'').replace('<svg ','<svg id="lbSvg" ');
+  const w=Math.min(innerWidth*.9, 900, innerHeight*.74*p.w/p.h); $('lbSvg').style.width=Math.round(w)+'px';
+  $('lightbox').hidden=false; $('lbClose').focus(); }
+function closeLB(){ $('lightbox').hidden=true; const f=$('ph-'+lbIdx); if(f) f.focus(); }
+$('scrap').addEventListener('click',e=>{ const f=e.target.closest('[data-open]'); if(f) openLB(Number(f.dataset.open)); });
+$('scrap').addEventListener('keydown',e=>{ const f=e.target.closest('[data-open]'); if(f && (e.key==='Enter'||e.key===' ')){ e.preventDefault(); openLB(Number(f.dataset.open)); } });
+$('filmstrip').addEventListener('click',e=>{ const b=e.target.closest('[data-jump]'); if(!b) return; const f=$('ph-'+b.dataset.jump); f.scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth', block:'center'}); });
+$('lbClose').addEventListener('click',closeLB);
+$('lbPrev').addEventListener('click',()=>openLB(lbIdx-1));
+$('lbNext').addEventListener('click',()=>openLB(lbIdx+1));
+$('lightbox').addEventListener('click',e=>{ if(e.target.id==='lightbox') closeLB(); });
+document.addEventListener('keydown',e=>{ if($('lightbox').hidden) return; if(e.key==='Escape') closeLB(); if(e.key==='ArrowLeft') openLB(lbIdx-1); if(e.key==='ArrowRight') openLB(lbIdx+1); });
+let tx=null; $('lightbox').addEventListener('touchstart',e=>{tx=e.touches[0].clientX},{passive:true});
+$('lightbox').addEventListener('touchend',e=>{ if(tx==null) return; const dx=e.changedTouches[0].clientX-tx; if(Math.abs(dx)>50) openLB(lbIdx+(dx<0?1:-1)); tx=null; });
+
+/* ---------- sound bar ---------- */
+(function(){
+  const canEmbed=!/claude/i.test(location.hostname);
+  if(!canEmbed) return;   // Claude-hosted pages can't embed other sites; the Play link opens Spotify instead
+  const play=$('sbPlay'), panel=$('sbPanel');
+  play.addEventListener('click',e=>{
+    e.preventDefault();
+    if(!panel.firstChild) panel.innerHTML=`<iframe title="shoujo dream playlist" src="https://open.spotify.com/embed/playlist/5qV1bqXR7ars4wGcUUyTi7?utm_source=generator&theme=0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
+    panel.hidden=!panel.hidden; play.textContent=panel.hidden?'Play':'Hide';
+  });
+})();
+
+/* ---------- interactions ---------- */
+let toastT;
+function toast(msg){ const t=$('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('show'),3200); }
+function showBanner(msg){ const b=$('banner'); b.textContent=msg; b.hidden=!msg; }
+
+$('rateInput').addEventListener('click',e=>{ const b=e.target.closest('button[data-r]'); if(!b) return; state.rating=Number(b.dataset.r); renderRateInput(); b.blur(); $('rateInput').querySelector(`[data-r="${state.rating}"]`).focus(); });
+$('rateInput').addEventListener('keydown',e=>{
+  if(!['ArrowRight','ArrowLeft','ArrowUp','ArrowDown'].includes(e.key)) return; e.preventDefault();
+  const d=(e.key==='ArrowRight'||e.key==='ArrowUp')?1:-1; state.rating=Math.max(1,Math.min(5,(state.rating||0)+d)); renderRateInput();
+  $('rateInput').querySelector(`[data-r="${state.rating}"]`).focus();
+});
+
+$('logForm').addEventListener('submit',async e=>{
+  e.preventDefault(); if(state.readOnly) return;
+  const title=$('fTitle').value.trim(); $('logErr').textContent='';
+  if(!title){ $('logErr').textContent='Add a title first.'; $('fTitle').focus(); return; }
+  if(!state.rating){ $('logErr').textContent='Give it a rating in hydrangeas.'; return; }
+  const b={id:newId(), title:title.slice(0,120), author:$('fAuthor').value.trim().slice(0,80), rating:state.rating, thought:$('fThought').value.trim().slice(0,200), createdAt:Date.now()};
+  $('logBtn').disabled=true;
+  const before=state.books.length;
+  const ok=await store.addBook(b);
+  $('logBtn').disabled=state.readOnly;
+  if(!ok) return;
+  $('fTitle').value=''; $('fAuthor').value=''; $('fThought').value=''; state.rating=0; renderRateInput();
+  const after=before+1;
+  toast(after%5===0 ? `That's ${after} books. You earned a gold ring: ${ringName(after)}.` : `${b.title} is on the shelf. New picks are waiting in Read next.`);
+  findRecs(true);
+});
+
+let armed=null, armT;
+document.addEventListener('click',async e=>{
+  const del=e.target.closest('[data-del]');
+  if(del){
+    const id=del.dataset.del;
+    if(armed!==id){ document.querySelectorAll('.linkbtn.arm').forEach(x=>{x.classList.remove('arm'); x.textContent='Remove';}); armed=id; del.classList.add('arm'); del.textContent='Tap again to remove'; clearTimeout(armT); armT=setTimeout(()=>{armed=null; render();},3000); return; }
+    armed=null; await store.removeBook(id); return;
+  }
+  const wb=e.target.closest('[data-wish]');
+  if(wb){
+    const items=JSON.parse($('recList').dataset.items||'[]'); const r=items[Number(wb.dataset.wish)]; if(!r) return;
+    if(state.wish.some(w=>norm(w.title)===norm(r.title))) return;
+    wb.disabled=true;
+    const ok=await store.addWish({id:newId(), title:r.title, author:r.author||'', why:r.why||'', got:false, createdAt:Date.now()});
+    if(ok) toast(`${r.title} is on your Kinokuniya list.`); else wb.disabled=false;
+    return;
+  }
+  const uw=e.target.closest('[data-unwish]'); if(uw){ await store.removeWish(uw.dataset.unwish); return; }
+});
+document.addEventListener('change',e=>{ const c=e.target.closest('[data-got]'); if(c) store.setGot(c.dataset.got, c.checked); });
+$('findBtn').addEventListener('click',()=>findRecs(false));
+$('sealBtn').addEventListener('click',()=>{ $('ps').textContent = $('ps').textContent ? '' : 'Great job, cutie.'; });
+window.addEventListener('hashchange',render);
+
+/* ---------- boot ---------- */
+renderRateInput();
+render();
+(async function boot(){
+  if(!window.claude || typeof window.claude.use!=='function'){ startLocal(); return; }
+  claude.use('sample').then(s=>{ sample=s||null; }).catch(()=>{ sample=null; });
+  let d=null; try{ d=await claude.use('db'); }catch(e){ d=null; }
+  if(!d){ startLocal(); showBanner("This shelf is only saving on this device right now. Open it while signed in to Claude to keep it everywhere."); return; }
+  db=d; state.mode='db';
+  let loaded=0;
+  const timer=setTimeout(()=>{ if(loaded<2) showBanner("Your shelf can't be reached right now. It will appear once the connection is back."); },10000);
+  const done=()=>{ loaded++; if(loaded>=2){ clearTimeout(timer); showBanner(state.readOnly?$('banner').textContent:''); } };
+  const fail=e=>{ clearTimeout(timer); if(e && e.code!=='revoked') showBanner("The shelf stopped syncing. Reload the page to reconnect."); };
+  let gotB=false, gotW=false;
+  db.collection('books').orderBy('createdAt','desc').onSnapshot(s=>{ state.books=s.docs.map(x=>clean({id:x.id,...x.data()})); if(!s.metadata.fromCache && !gotB){gotB=true; done();} render(); }, fail);
+  db.collection('wishlist').orderBy('createdAt','desc').onSnapshot(s=>{ state.wish=s.docs.map(x=>clean({id:x.id,...x.data()})); if(!s.metadata.fromCache && !gotW){gotW=true; done();} render(); }, fail);
+  db.doc('recs/latest').onSnapshot(s=>{
+    if(s.exists){ const r=s.data(); if(r && Array.isArray(r.items)) state.recs={items:r.items.slice(0,3).map(x=>({title:String(x.title||'').slice(0,120), author:String(x.author||'').slice(0,80), why:String(x.why||'').slice(0,600)})), at:Number(r.at)||0, source:r.source==='claude'?'claude':'archive'}; }
+    render();
+  }, ()=>{});
+})();
+})();
+</script>
+</body>
+</html>
