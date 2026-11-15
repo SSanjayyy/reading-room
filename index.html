@@ -330,6 +330,9 @@ footer{position:relative; margin-top:0 !important; padding:26px 16px 22px;
 .sb-play{text-decoration:none; padding:8px 16px 7px; font-size:15px}
 .sb-panel{padding:10px 10px 0}
 .sb-panel iframe{width:100%; height:152px; border:0; border-radius:10px; display:block}
+.sb-help{font-style:italic; font-size:14px; color:#d8c7a6; padding:6px 2px 0}
+.sb-help a{color:var(--pink)}
+.sb-help .linkbtn{color:var(--gold-hi); font-size:13px}
 body{padding-bottom:84px}
 .toast{bottom:92px}
 @media (prefers-reduced-motion:reduce){ .vinyl,.eq rect{animation:none} }
@@ -1493,7 +1496,12 @@ $('lightbox').addEventListener('touchend',e=>{ if(tx==null) return; const dx=e.c
   const play=$('sbPlay'), panel=$('sbPanel');
   play.addEventListener('click',e=>{
     e.preventDefault();
-    if(!panel.firstChild) panel.innerHTML=`<iframe title="shoujo dream playlist" src="https://open.spotify.com/embed/playlist/5qV1bqXR7ars4wGcUUyTi7?utm_source=generator&theme=0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
+    const SRC='https://open.spotify.com/embed/playlist/5qV1bqXR7ars4wGcUUyTi7?utm_source=generator';
+    if(!panel.firstChild){
+      panel.innerHTML=`<iframe title="shoujo dream playlist" src="${SRC}" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+        <div class="sb-help">Not loading? <button type="button" class="linkbtn" id="sbRetry">Try again</button> or <a href="https://open.spotify.com/playlist/5qV1bqXR7ars4wGcUUyTi7" target="_blank" rel="noopener">open it in Spotify</a>.</div>`;
+      $('sbRetry').addEventListener('click',()=>{ const f=panel.querySelector('iframe'); f.src='about:blank'; setTimeout(()=>{ f.src=SRC+'&t='+Date.now(); },60); });
+    }
     panel.hidden=!panel.hidden; play.textContent=panel.hidden?'Play':'Hide';
   });
 })();
